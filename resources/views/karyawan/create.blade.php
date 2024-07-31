@@ -36,8 +36,8 @@
               <select class="form-select" id="jabatan" name="jabatan" required>
                   <option value="" disabled selected>Select a jabatan</option>
                   <option value="manager">Manager</option>
-                  <option value="admin">Admin</option>
-                  <option value="anggota">Anggota</option>
+                  <option value="admin">Staff</option>
+                  <option value="anggota">Operator</option>
               </select>
             <div class="form-group">
               <label for="tanggal_bergabung">Tanggal_Bergabung</label>

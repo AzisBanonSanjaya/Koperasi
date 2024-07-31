@@ -12,7 +12,7 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col">No</th>  
+                    <th scope="col">No</th> 
                     <th scope="col">Jumlah Pinjaman</th>
                     <th scope="col">Tanggal Pinjaman</th>
                     <th scope="col">Jangka Waktu</th>

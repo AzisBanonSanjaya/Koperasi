@@ -13,7 +13,6 @@
           <thead>
               <tr>
                   <th scope="col">No</th> 
-                  <th scope="col">Nik</th> 
                   <th scope="col">Nama</th>  
                   <th scope="col">Jumlah angsuran</th>
                   <th scope="col">Tanggal Jatuh tempo</th>
@@ -26,7 +25,6 @@
               @foreach ($angsurans as $index => $angsuran)
                   <tr>
                       <th scope="row">{{ $index + 1 }}</th>
-                      <td>{{ $angsuran->nik }}</td>
                       <td>{{ $angsuran->nama }}</td>
                       <td>{{ $angsuran->jumlah_angsuran }}</td>
                       <td>{{ $angsuran->tanggal_jatuh_tempo }}</td>

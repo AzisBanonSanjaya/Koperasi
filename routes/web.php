@@ -11,6 +11,11 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\KoperasiController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\DepartemenController;
+use App\Http\Controllers\JabatanController;
+
+Route::resource('departemen', DepartemenController::class);
+Route::resource('jabatan', JabatanController::class);
 
 Route::get('/', [LoginController::class, 'index'])->name('login');
 Route::post('/', [LoginController::class, 'login'])->name('login.post');
@@ -19,7 +24,7 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register'])->name('register.post');
 
-Route::group(['middleware' => 'auth:karyawan'], function () {
+Route::group(['middleware' ], function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     // Karyawan Routes

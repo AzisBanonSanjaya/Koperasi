@@ -1,13 +1,15 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
+use App\Models\Karyawan;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        return view('dashboard.index');
+        $karyawans = Karyawan::all(); // Mengambil semua data karyawan
+
+        return view('dashboard.index', compact('karyawans'));
     }
-}
+    }

@@ -4,28 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
-class Karyawan extends Model
+class Karyawan  extends Authenticatable
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
+    protected $fillable = ['nik', 'name','email', 'departemen', 'jabatan', 'tanggal_bergabung', 'alamat', 'no_telepon',  'status_keanggotaan', ];
 
-    protected $fillable = [
-        'user_id',
-        'nik',
-        'name',
-        'email',
-        'departemen',
-        'jabatan',
-        'tanggal_bergabung',
-        'alamat',
-        'no_telepon',
-        'status_keanggotaan',
-        'expired',
-    ];
-
-    // Relasi dengan model User
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 }

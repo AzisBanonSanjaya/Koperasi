@@ -1,3 +1,5 @@
+<!-- resources/views/dashboard/index.blade.php -->
+
 @extends('layouts.main')
 
 @section('title', 'Dashboard')
@@ -40,41 +42,28 @@
     </div>
 
     <div class="row g-4 mt-4">
-        <!-- Recent Activity Table -->
+        <!-- Karyawan Table -->
         <div class="col-12">
             <div class="card">
-                <div class="card-header">Recent Activity</div>
+                <div class="card-header">Data Karyawan</div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-hover table-striped">
                             <thead class="table-dark">
                                 <tr>
-                                    <th>#</th>
-                                    <th>User</th>
-                                    <th>Activity</th>
-                                    <th>Date</th>
+                                    <th>Nik</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>John Doe</td>
-                                    <td>Logged in</td>
-                                    <td>2024-07-24</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>Jane Smith</td>
-                                    <td>Purchased a product</td>
-                                    <td>2024-07-23</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td>Bob Johnson</td>
-                                    <td>Signed up</td>
-                                    <td>2024-07-22</td>
-                                </tr>
-                                <!-- Add more rows as needed -->
+                                @foreach($karyawans as $karyawan)
+                                    <tr>
+                                        <td>{{ $karyawan->nik }}</td>
+                                        <td>{{ $karyawan->name }}</td>
+                                        <td>{{ $karyawan->email }}</td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

@@ -13,7 +13,6 @@
             <thead>
                 <tr>
                     <th scope="col">No</th>
-                    <th scope="col">Nik</th>
                     <th scope="col">Name</th>
                     <th scope="col">Email</th>
                     <th scope="col">Role</th>
@@ -24,8 +23,7 @@
                 @foreach ($users as $user)
                     <tr>
                         <th scope="row">{{ $loop->iteration }}</th>
-                        <td><a href="{{route('karyawan.show', $user->nik )}}">{{ $user->nik }}</a></td>
-                        <td>{{ $user->name }}</td>
+                        <td><a href="{{route('karyawan.show', $user->nik )}}">{{ $user->name }}</a></td>
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->role }}</td>
                         

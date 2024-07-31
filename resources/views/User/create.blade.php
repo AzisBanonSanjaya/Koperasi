@@ -20,19 +20,19 @@
                         <select class="form-select" id="nik" name="nik" required>
                             <option value="" disabled selected>Select a Nik</option>
                             @foreach($karyawans as $karyawan)
-                                <option value="{{ $karyawan->nik }}">{{ $karyawan->nik }}</option>
+                                <option value="{{ $karyawan->nik }}" data-name="{{$karyawan->name}}" data-email="{{$karyawan->email}}">{{ $karyawan->nik }}</option>
                             @endforeach
                         </select>
                     </div>
 
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="name" name="name" required>
+                        <input type="text" class="form-control" id="name" name="name" readonly required>
                     </div>
 
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
+                        <input type="email" class="form-control" id="email" name="email" readonly required>
                     </div>
 
                     <div class="mb-3">
@@ -55,3 +55,16 @@
         </div>
     </div>
 @endsection
+@push('scripts')
+    <script>
+        $(document).ready(function () {
+            $("#nik").on("change", function(){
+                let nik = $(this).val();
+                let name = $(this).find(':selected').attr('data-name');
+                let email = $(this).find(':selected').attr('data-email');
+                $("#name").val(name);
+                $("#email").val(email);
+            });
+        });
+    </script>
+@endpush

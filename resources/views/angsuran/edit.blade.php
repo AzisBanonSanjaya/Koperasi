@@ -43,6 +43,10 @@
                         <option value="transfer">Transfer</option>
                     </select>
                     </div>
+                    <div class="form-group my-2">
+                        <label for="bukti_pembayaran">Bukti Pembayaran</label>
+                        <input type="file" class="form-control" id="bukti_pembayaran" name="bukti_pembayaran" required>
+                    </div>
                     <br>
                     <button type="submit" class="btn btn-primary">Update angsuran</button>
                 </form>
@@ -50,3 +54,14 @@
         </div>
     </div>
   @endsection
+  @push('scripts')
+    <script>
+        $(document).ready(function () {
+            $("#nik").on("change", function() {
+                let nik = $(this).val();
+                let name = $(this).find(':selected').data('name');
+                $("#nama").val(name);
+            });
+        });
+    </script>
+@endpush

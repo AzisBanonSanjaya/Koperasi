@@ -13,7 +13,6 @@
             <thead>
                 <tr>
                     <th scope="col">No</th>
-                    <th scope="col">Nik</th>
                     <th scope="col">Name</th>
                     <th scope="col">Departemen</th>
                     <th scope="col">Tanggal Bergabung</th>
@@ -26,7 +25,6 @@
                 @foreach ($karyawan as $index => $karyawan)
                     <tr>
                         <th scope="row">{{ $index + 1 }}</th>
-                        <td>{{ $karyawan->nik }}</td>
                         <td>{{ $karyawan->name }}</td>
                         <td>{{ $karyawan->departemen }}</td>
                         <td>{{ \Carbon\Carbon::parse($karyawan->tanggal_bergabung)->format('d-m-Y') }}</td>

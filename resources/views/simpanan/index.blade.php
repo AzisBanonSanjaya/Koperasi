@@ -13,7 +13,6 @@
             <thead>
                 <tr>
                     <th scope="col">No</th>
-                    <th scope="col">Nik</th>
                     <th scope="col">Nama</th>
                     <th scope="col">Jenis Simpanan</th>
                     <th scope="col">Jumlah</th>
@@ -26,7 +25,6 @@
                 @foreach ($simpanans as $index => $simpanan)
                     <tr>
                         <th scope="row">{{ $index + 1 }}</th>
-                        <td>{{ $simpanan->nik }}</td>
                         <td>{{ $simpanan->nama }}</td>
                         <td>{{ $simpanan->jenis_simpanan }}</td>
                         <td>{{ $simpanan->jumlah }}</td>

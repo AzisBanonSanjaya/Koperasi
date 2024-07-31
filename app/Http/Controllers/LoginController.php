@@ -22,7 +22,7 @@ class LoginController extends Controller
         ]);
 
         $credentials = $request->only('email', 'password');
-        if (Auth::guard('karyawan')->attempt($credentials)) {
+        if (Auth::attempt($credentials)) {
             return redirect()->intended('dashboard');
         }
 
@@ -33,12 +33,12 @@ class LoginController extends Controller
 
     public function logout()
     {
-        Auth::guard('karyawan')->logout();
+        Auth::logout();
         return redirect()->route('login');
     }
     public function Register()
     {
-        Auth::guard('karyawan')->register();
+        // Auth::guard('user')->register();
         return redirect()->route('register');
     }
 

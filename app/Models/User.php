@@ -3,14 +3,17 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
+use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use  HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -84,11 +87,5 @@ class User extends Authenticatable
     public function scopeNotSuperAdmin(Builder $query): Builder
     {
         return $query->where('id', '!=', 1);
-    }
-
-    // Relasi satu-ke-satu dengan model Karyawan
-    public function karyawan()
-    {
-        return $this->hasOne(Karyawan::class);
     }
 }

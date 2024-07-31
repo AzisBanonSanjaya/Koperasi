@@ -38,7 +38,7 @@
 
         <div class="form-group mb-3">
             <label for="password">Password</label>
-            <input type="password" class="form-control" id="password" name="password" placeholder="Leave blank to keep current password">
+            <input type="password" class="form-control" id="password" name="password" placeholder="">
         </div>
 
         <div class="form-group mb-3">

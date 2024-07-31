@@ -53,7 +53,7 @@
                     </div>
                     <div class="form-group my-2">
                         <label for="total_angsuran">Total Angsuran</label>
-                        <input type="text" class="form-control" id="total_angsuran" name="total_angsuran" required>
+                        <input type="text" class="form-control" id="total_angsuran" name="total_angsuran" readonly required>
                     </div>
                     <br>
                     <button type="submit" class="btn btn-primary">Create Pinjaman</button>
@@ -62,6 +62,7 @@
         </div>
     </div>
 @endsection
+
 @push('scripts')
     <script>
         $(document).ready(function () {
@@ -77,18 +78,31 @@
                     $("#estimasiWrapper").addClass('hidden');
                     $("#label-estimasi").text('');
                 }
+                calculateTotal();
             });
 
-            $("#jumlah_pinjaman, #bunga_persen, #estimasi").on('change', function(){
-                let jumlah_pinjaman = $("#jumlah_pinjaman").val();
-                let bunga_persen = $("#bunga_persen").val();
-                let estimasi = $("#estimasi").val();
-                
-                if(jumlah_pinjaman != '' && bunga_persen != '' && estimasi != ''){
-                    let bunga = (parseInt(jumlah_pinjaman) * parseFloat(bunga_persen)) * parseInt(estimasi);
-                    $("#total_bunga").val(bunga);
-                }
+            $("#jumlah_pinjaman, #bunga_persen, #estimasi").on('input', function(){
+                calculateTotal();
             });
+
+            function calculateTotal() {
+                let jumlah_pinjaman = parseFloat($("#jumlah_pinjaman").val()) || 0;
+                let bunga_persen = parseFloat($("#bunga_persen").val()) || 0;
+                let estimasi = parseFloat($("#estimasi").val()) || 0;
+                let jangka_waktu = $("#jangka_waktu").find(':selected').val();
+
+                let total_bunga = (jumlah_pinjaman * (bunga_persen / 100)) * estimasi;
+                $("#total_bunga").val(total_bunga.toFixed(2));
+
+                let total_angsuran = 0;
+                if (jangka_waktu === 'bulan') {
+                    total_angsuran = (jumlah_pinjaman + total_bunga) / (estimasi);
+                } else if (jangka_waktu === 'tahun') {
+                    total_angsuran = (jumlah_pinjaman + total_bunga) / (estimasi * 12);
+                }
+
+                $("#total_angsuran").val(total_angsuran.toFixed(2));
+            }
         });
     </script>
 @endpush
