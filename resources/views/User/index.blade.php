@@ -9,7 +9,7 @@
                 <a href="{{route('user.create')}}" class="btn btn-primary float-end my-2">Tambah User</a>
             </div>
         </div>
-        <table class="table">
+        <table id="userTable" class="table">
             <thead>
                 <tr>
                     <th scope="col">No</th>
@@ -41,3 +41,15 @@
         </table>
     </div>
 @endsection
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            $('#userTable').DataTable({
+                "paging": true,
+                "searching": true,
+                "ordering": true,
+                "info": true
+            });
+        });
+    </script>
+    @endpush

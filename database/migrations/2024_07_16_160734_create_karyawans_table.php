@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('nik');
             $table->string('name');
-            $table->string('departemen');
-            $table->string('jabatan');
+            $table->foreignId('departemen_id')->constrained()->onDelete('cascade');
+            $table->foreignId('jabatan_id')->constrained()->onDelete('cascade');
             $table->date('tanggal_bergabung');
             $table->text('alamat');
             $table->string('no_telepon');

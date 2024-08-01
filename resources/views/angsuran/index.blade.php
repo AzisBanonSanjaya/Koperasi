@@ -9,7 +9,7 @@
               <a href="{{route('angsuran.create')}}" class="btn btn-primary float-end my-2">Tambah Angsuran</a>
           </div>
       </div>
-      <table class="table">
+      <table id="angsuranTable" class="table">
           <thead>
               <tr>
                   <th scope="col">No</th> 
@@ -44,3 +44,15 @@
       </table>
   </div>
 @endsection
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            $('#angsuranTable').DataTable({
+                "paging": true,
+                "searching": true,
+                "ordering": true,
+                "info": true
+            });
+        });
+    </script>
+    @endpush

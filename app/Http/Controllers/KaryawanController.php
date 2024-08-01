@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Karyawan;
 use Illuminate\Http\Request;
+use App\Models\Departemen;
+use App\Models\Jabatan;
 
 class KaryawanController extends Controller
 {
@@ -14,17 +16,25 @@ class KaryawanController extends Controller
     public function index()
     {
         $karyawan = Karyawan::all();
-        return view('karyawan.index', compact('karyawan'));
+        $departemen = Departemen::all();
+        return view('karyawan.index', compact('karyawan', 'departemen'));
         
     }
+
+    
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
+
     {
-      return view('karyawan.create');
+        $departemen = Departemen::all();
+        $jabatan = Jabatan::all();
+        return view('karyawan.create', compact('departemen', 'jabatan'));
     }
+
+    
 
     /**
      * Store a newly created resource in storage.
@@ -44,8 +54,8 @@ class KaryawanController extends Controller
         $karyawan = new Karyawan;
         $karyawan->nik = $request->nik;
         $karyawan->name = $request->name;
-        $karyawan->departemen = $request->departemen;
-        $karyawan->jabatan = $request->jabatan;
+        $karyawan->departemen_id = $request->departemen;
+        $karyawan->jabatan_id = $request->jabatan;
         $karyawan->tanggal_bergabung = $request->tanggal_bergabung;
         $karyawan->alamat = $request->alamat;
         $karyawan->no_telepon = $request->no_telepon;
@@ -62,28 +72,43 @@ class KaryawanController extends Controller
      */
     public function show($nik)
     {
-       $karyawan = Karyawan::where('nik', $nik)->first();
-       if(!$karyawan){
-        return redirect()->route('karyawan.index')->with('success', 'Karyawan Not Found');
-       }
-       return view('karyawan.show', compact('karyawan'));
-    }
+        $karyawan = Karyawan::find($id);
+        if (!$karyawan) {
+            return redirect()->back()->with('error', 'Karyawan not found');
+        }
 
+        $departemen = $karyawan->departemen; // Menggunakan relasi
+
+        return view('karyawan.show', compact('karyawan', 'departemen'));
+    }
     /**
      * Show the form for editing the specified resource.
      */
     public function edit($id)
 {
     $karyawan = Karyawan::findOrFail($id);
-    return view('karyawan.edit', compact('karyawan'));
+    $departemen = Departemen::all();
+    $jabatan = Jabatan::all();
+    return view('karyawan.edit', compact('karyawan','departemen', 'jabatan'));
 }
 
 public function update(Request $request, Karyawan $karyawan)
 {
+    $request->validate([
+        'nik' => 'required|string|max:255',
+        'name' => 'required|string|max:255',
+        'no_telepon' => 'required|string|max:255',
+        'email' => 'required|email|max:255',
+        'departemen' => 'required|exists:departemens,id',
+        'jabatan' => 'required|exists:jabatans,id',
+        'alamat' => 'required|string|max:255',
+        'tanggal_bergabung' => 'required|date',
+    ]);
+
     $karyawan->nik = $request->nik;
     $karyawan->name = $request->name;
-    $karyawan->departemen = $request->departemen;
-    $karyawan->jabatan = $request->jabatan;
+    $karyawan->departemen_id = $request->departemen;
+    $karyawan->jabatan_id = $request->jabatan;
     $karyawan->tanggal_bergabung = $request->tanggal_bergabung;
     $karyawan->alamat = $request->alamat;
     $karyawan->no_telepon = $request->no_telepon;

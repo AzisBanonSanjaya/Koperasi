@@ -15,16 +15,15 @@ class UserController extends Controller
     {
         $users = User::all();
         return view('user.index', compact('users'));
-        
     }
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
-    {
+    { 
         $karyawans = Karyawan::all();
-      return view('user.create', ['karyawans' => $karyawans]);
+        return view('user.create', compact('karyawans'));
     }
 
     /**
@@ -32,6 +31,13 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'nik' => 'required',
+            'name' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:8',
+            'role' => 'required',
+        ]);
 
         $user = new User;
         $user->nik = $request->nik;
@@ -40,7 +46,8 @@ class UserController extends Controller
         $user->password = bcrypt($request->password);
         $user->role = $request->role;
         $user->save();
-        return redirect()->route('user.index')->with('success', 'User deleted successfully');
+
+        return redirect()->route('user.index')->with('success', 'User created successfully');
     }
 
     /**
@@ -55,29 +62,47 @@ class UserController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit($id)
-{
-    $user = User::findOrFail($id);
-    $karyawans = Karyawan::all();
-    return view('user.edit', compact('user', 'karyawans'));
-}
+    {
+        $user = User::findOrFail($id);
+        $karyawans = Karyawan::all(); // Ambil semua data karyawan
+        return view('user.edit', compact('user', 'karyawans'));
+    }
 
-public function update(Request $request, User $user)
-{
-    $user->nik = $request->nik;
-    $user->name = $request->name;
-    $user->email = $request->email;
-    $user->password = bcrypt($request->password);
-    $user->role = $request->role;
-    $user->save();
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
 
-    return redirect()->route('user.index')->with('success', 'User updated successfully');
-}
+        $request->validate([
+            'nik' => 'required',
+            'name' => 'required',
+            'email' => 'required|email',
+            'password' => 'nullable|min:8',
+            'role' => 'required',
+        ]);
 
-public function destroy($id)
-{
-    $user = User::findOrFail($id);
-    $user->delete();
+        $user->nik = $request->nik;
+        $user->name = $request->name;
+        $user->email = $request->email;
+        if ($request->password) {
+            $user->password = bcrypt($request->password);
+        }
+        $user->role = $request->role;
+        $user->save();
 
-    return redirect()->route('user.index')->with('success', 'User deleted successfully');
-}
+        return redirect()->route('user.index')->with('success', 'User updated successfully');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return redirect()->route('user.index')->with('success', 'User deleted successfully');
+    }
 }

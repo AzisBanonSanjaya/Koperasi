@@ -32,13 +32,16 @@ class DepartemenController extends Controller
         return redirect()->route('departemen.index')->with('success', 'Departemen created successfully');
     }
 
-    public function show($name)
+    public function show($id)
     {
-        $departemen = Departemen::where('name', $name)->first();
+        $departemen = Departemen::find($id);
         if (!$departemen) {
-            return redirect()->route('departemen.index')->with('error', 'Departemen Not Found');
+            return redirect()->back()->with('error', 'Departemen not found');
         }
-        return view('departemen.show', compact('departemen'));
+
+        $karyawanList = $departemen->karyawan; // Menggunakan relasi
+
+        return view('departemen.show', compact('departemen', 'karyawanList'));
     }
 
     public function edit($id)

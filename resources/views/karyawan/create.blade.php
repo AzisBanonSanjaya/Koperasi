@@ -26,18 +26,18 @@
               <label for="departemen">Departemen</label>
               <select class="form-select" id="departemen" name="departemen" required>
                   <option value="" disabled selected>Select a departemen</option>
-                  <option value="gudang">Gudang</option>
-                  <option value="maintenance">Maintenance</option>
-                  <option value="edp">Edp</option>
+                  @foreach($departemen as $d)
+                      <option value="{{ $d->id }}" >{{ $d->name}}</option>
+                  @endforeach
               </select>
             </div>
             <div class="form-group">
               <label for="jabatan">Jabatan</label>
               <select class="form-select" id="jabatan" name="jabatan" required>
                   <option value="" disabled selected>Select a jabatan</option>
-                  <option value="manager">Manager</option>
-                  <option value="admin">Staff</option>
-                  <option value="anggota">Operator</option>
+                  @foreach($jabatan as $j)
+                      <option value="{{ $j->id }}" >{{ $j->name}}</option>
+                  @endforeach
               </select>
             <div class="form-group">
               <label for="tanggal_bergabung">Tanggal_Bergabung</label>

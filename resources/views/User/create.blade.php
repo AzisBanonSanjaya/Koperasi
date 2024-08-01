@@ -16,17 +16,19 @@
                     @csrf
 
                     <div class="mb-3">
-                        <label for="nik" class="form-label">Nik</label>
+                    <label for="nik" class="form-label">Nik</label>
                         <select class="form-select" id="nik" name="nik" required>
                             <option value="" disabled selected>Select a Nik</option>
                             @foreach($karyawans as $karyawan)
-                                <option value="{{ $karyawan->nik }}" data-name="{{$karyawan->name}}" data-email="{{$karyawan->email}}">{{ $karyawan->nik }}</option>
+                                <option value="{{ $karyawan->nik }}" data-name="{{$karyawan->name}}" data-email="{{$karyawan->email}}">
+                                    {{ $karyawan->nik }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Name</label>
+                    <div class="form-group mb-3">
+                        <label for="name">Name</label>
                         <input type="text" class="form-control" id="name" name="name" readonly required>
                     </div>
 
@@ -61,6 +63,7 @@
             $("#nik").on("change", function(){
                 let nik = $(this).val();
                 let name = $(this).find(':selected').attr('data-name');
+                console.log(name);
                 let email = $(this).find(':selected').attr('data-email');
                 $("#name").val(name);
                 $("#email").val(email);

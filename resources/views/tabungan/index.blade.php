@@ -13,7 +13,6 @@
             <thead>
                 <tr>
                     <th scope="col">No</th>
-                    <th scope="col">Nama</th>
                     <th scope="col">Jenis Transaksi</th>
                     <th scope="col">Jumlah Transaksi</th>
                     <th scope="col">Tanggal Transaksi</th>
@@ -25,7 +24,6 @@
                 @foreach ($tabungans as $index => $tabungan)
                     <tr>
                         <th scope="row">{{ $index + 1 }}</th>
-                        <td>{{ $tabungan->nama}}</td>
                         <td>{{ $tabungan->jenis_transaksi }}</td>
                         <td>{{ $tabungan->jumlah_transaksi }}</td>
                         <td>{{ $tabungan->tanggal_transaksi }}</td>

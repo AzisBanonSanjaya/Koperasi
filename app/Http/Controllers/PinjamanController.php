@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pinjaman;
 use Illuminate\Http\Request;
+use App\Models\Karyawan;
 
 class PinjamanController extends Controller
 {
@@ -17,7 +18,10 @@ class PinjamanController extends Controller
     // Menampilkan form untuk membuat pinjaman baru
     public function create()
     {
-        return view('pinjaman.create');
+        {
+            $karyawans = Karyawan::all(); // Fetch all karyawan records
+            return view('pinjaman.create', compact('karyawans'));
+        }
     }
 
     // Menyimpan data pinjaman baru

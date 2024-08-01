@@ -17,6 +17,9 @@
                 <div class="form-group">
                     <label for="name">Nama</label>
                     <input type="text" class="form-control" id="name" name="name"  required>
+                    @error('name')
+                        <div class="invalid-feedback d-block mt-1">{{ $message }}</div>
+                    @enderror
                     <br>
                     <button type="submit" class="btn btn-primary">Create Jabatan</button>
                 </form>

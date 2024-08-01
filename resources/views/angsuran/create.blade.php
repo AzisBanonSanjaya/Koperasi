@@ -42,8 +42,8 @@
                         <option value="transfer">Transfer</option>
                     </select>
                     </div>
-                    <div class="form-group my-2">
-                        <label for="bukti_pembayaran">Bukti Pembayaran</label>
+                    <div class="form-group hidden my-2"id="buktiWrapper">
+                        <label for="bukti_pembayaran">Bukti Pembayaran </label>
                         <input type="file" class="form-control" id="bukti_pembayaran" name="bukti_pembayaran" required>
                     </div>
                     <br>
@@ -61,6 +61,15 @@
                 let name = $(this).find(':selected').data('name');
                 $("#nama").val(name);
             });
+            $("#metode_pembayaran").on("change", function(){
+                let metode_pembayaran =  $(this).find(':selected').text();
+                if(metode_pembayaran == 'Transfer'){
+                    $("#buktiWrapper").removeClass('hidden');
+                }else{
+                    $("#buktiWrapper").addClass('hidden');
+                }
+            });
+
         });
     </script>
 @endpush
