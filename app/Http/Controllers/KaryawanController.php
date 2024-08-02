@@ -71,16 +71,16 @@ class KaryawanController extends Controller
      * Display the specified resource.
      */
     public function show($nik)
-    {
-        $karyawan = Karyawan::find($id);
-        if (!$karyawan) {
-            return redirect()->back()->with('error', 'Karyawan not found');
-        }
-
-        $departemen = $karyawan->departemen; // Menggunakan relasi
-
-        return view('karyawan.show', compact('karyawan', 'departemen'));
+{
+    $karyawan = Karyawan::where('nik', $nik)->first();
+    if (!$karyawan) {
+        return redirect()->back()->with('error', 'Karyawan not found');
     }
+
+    $departemen = $karyawan->departemen; // Menggunakan relasi
+
+    return view('karyawan.show', compact('karyawan', 'departemen'));
+}
     /**
      * Show the form for editing the specified resource.
      */

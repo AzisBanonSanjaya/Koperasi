@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use App\Models\Simpanan;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,11 @@ class SimpananController extends Controller
      */
     public function index()
     {
-        $simpanans = Simpanan::all();
+        if(Auth::user()->role == 'user'){
+            $simpanans = Simpanan::where('nama', Auth::user()->name)->get();
+        }else{
+            $simpanans = Simpanan::all();
+        }
         return view('simpanan.index', compact('simpanans'));
     }
 

@@ -9,7 +9,7 @@
                 <a href="{{route('pinjaman.create')}}" class="btn btn-primary float-end my-2">Tambah Pinjam</a>
             </div>
         </div>
-        <table id="pinjamanTable" class="table">
+        <table class="table">
             <thead>
                 <tr>
                     <th scope="col">No</th> 
@@ -46,16 +46,5 @@
         </table>
     </div>
 @endsection
-@push('scripts')
-    <script>
-        $(document).ready(function() {
-            $('#pinjamanTable').DataTable({
-                "paging": true,
-                "searching": true,
-                "ordering": true,
-                "info": true
-            });
-        });
-    </script>
-    @endpush
+   
 
