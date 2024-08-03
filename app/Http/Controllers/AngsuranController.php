@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use App\Models\Angsuran;
+use App\Models\Karyawan;
 use Illuminate\Http\Request;
 
 class AngsuranController extends Controller
@@ -12,7 +14,12 @@ class AngsuranController extends Controller
      */
     public function index()
     {
-        $angsurans = Angsuran::all();
+        $nik = Auth::user()->role == 'user' ? Auth::user()->nik : '';
+        if(Auth::user()->role != 'user'){
+            $angsurans = Angsuran::all();
+        }else{
+            $angsurans = Angsuran::where('nik',  $nik)->get();
+        }
         return view('angsuran.index', compact('angsurans'));
     }
 
@@ -21,7 +28,9 @@ class AngsuranController extends Controller
      */
     public function create()
     {
-        return view('angsuran.create');
+        $karyawans = Karyawan::all();
+        $nik = Auth::user()->role == 'user' ? Auth::user()->nik : '';
+        return view('angsuran.create', compact('karyawans','nik'));
     }
 
     /**
@@ -32,20 +41,20 @@ class AngsuranController extends Controller
         $request->validate([
             'nik' => 'required',
             'nama' => 'required',
-            'jumlah_angsuran' => 'required|numeric',
+            'jumlah_angsuran' => 'required',
             'tanggal_jatuh_tempo' => 'required|date',
             'tanggal_bayar' => 'required|date',
             'metode_pembayaran' => 'required',
-            'bukti_pembayaran' => 'required|file|mimes:jpg,png,pdf|max:2048',
         ]);
-
-        $file = $request->file('bukti_pembayaran');
-        $path = $file->store('bukti_pembayaran', 'public');
-
+        $path = '';
+        if($request->file('bukti_pembayaran')){
+            $file = $request->file('bukti_pembayaran');
+            $path = $file->store('bukti_pembayaran', 'public');
+        }
         $angsuran = new Angsuran;
         $angsuran->nik = $request->nik;
         $angsuran->nama = $request->nama;
-        $angsuran->jumlah_angsuran = $request->jumlah_angsuran;
+        $angsuran->jumlah_angsuran = str_replace(',', '', $request->jumlah_angsuran);
         $angsuran->tanggal_jatuh_tempo = $request->tanggal_jatuh_tempo;
         $angsuran->tanggal_bayar = $request->tanggal_bayar;
         $angsuran->metode_pembayaran = $request->metode_pembayaran;
@@ -68,7 +77,9 @@ class AngsuranController extends Controller
      */
     public function edit(Angsuran $angsuran)
     {
-        return view('angsuran.edit', compact('angsuran'));
+        $karyawans = Karyawan::all();
+        $nik = Auth::user()->role == 'user' ? Auth::user()->nik : '';
+        return view('angsuran.edit', compact('angsuran','karyawans','nik'));
     }
 
     /**
@@ -79,16 +90,15 @@ class AngsuranController extends Controller
         $request->validate([
             'nik' => 'required',
             'nama' => 'required',
-            'jumlah_angsuran' => 'required|numeric',
+            'jumlah_angsuran' => 'required',
             'tanggal_jatuh_tempo' => 'required|date',
             'tanggal_bayar' => 'required|date',
             'metode_pembayaran' => 'required',
-            'bukti_pembayaran' => 'nullable|file|mimes:jpg,png,pdf|max:2048',
         ]);
 
         $angsuran->nik = $request->nik;
         $angsuran->nama = $request->nama;
-        $angsuran->jumlah_angsuran = $request->jumlah_angsuran;
+        $angsuran->jumlah_angsuran =str_replace(',', '', $request->jumlah_angsuran);
         $angsuran->tanggal_jatuh_tempo = $request->tanggal_jatuh_tempo;
         $angsuran->tanggal_bayar = $request->tanggal_bayar;
         $angsuran->metode_pembayaran = $request->metode_pembayaran;

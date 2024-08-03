@@ -14,21 +14,28 @@
                 <h3>Add a Simpanan</h3>
                 <form action="{{ route('simpanan.store') }}" method="post">
                     @csrf
-                <div class="form-group">
-                    <label for="nik">Nik</label>
-                    <input type="text" class="form-control" id="nik" name="nik" value="{{ auth()->user()->nik }}" readonly required>
-                </div>
-                <div class="form-group">
-                    <label for="nama">Nama</label>
-                    <input type="text" class="form-control" id="nama" name="nama" value="{{ auth()->user()->name }}" readonly required>
-                </div>
+                    <div class="form-group">
+                        <label for="nik" class="form-label">Nik</label>
+                        <select class="form-select {{$nik ? 'select-readonly' : ''}} " id="nik" name="nik" required >
+                            <option value="" disabled selected>Select a Nik</option>
+                            @foreach($karyawans as $karyawan)
+                                <option value="{{ $karyawan->nik }}" {{$nik == $karyawan->nik ? 'selected' : ''}} data-name="{{$karyawan->name}}" data-email="{{$karyawan->email}}">
+                                    {{ $karyawan->nik }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="nama">Nama</label>
+                        <input type="text" class="form-control" id="nama" name="nama" value="{{ auth()->user()->name }}" readonly required>
+                    </div>
                     <div class="form-group">
                         <label for="jenis_simpanan">Jenis Simpanan</label>
                         <input type="text" class="form-control" id="jenis_simpanan" name="jenis_simpanan" required>
                     </div>
                     <div class="form-group">
                         <label for="jumlah">Jumlah</label>
-                        <input type="number" class="form-control" id="jumlah" name="jumlah" required>
+                        <input type="text" class="form-control currency" id="jumlah" name="jumlah" required>
                     </div>
                     <div class="form-group">
                         <label for="keterangan">Keterangan</label>
@@ -45,3 +52,15 @@
         </div>
     </div>
 @endsection
+@push('scripts')
+<script>
+    $(document).ready(function () {
+        $("#nik").on("change", function(){
+            let nik = $(this).val();
+            let name = $(this).find(':selected').attr('data-name');
+            $("#nama").val(name);
+        });
+        $("#nik").trigger('change');
+    });
+</script>
+@endpush

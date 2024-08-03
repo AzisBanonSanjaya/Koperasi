@@ -97,7 +97,7 @@
                             <th>NIK</th>
                             <th>Name</th>
                             <th>Email</th>
-                            <th>Actions</th>
+                            <th>Saldo</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -106,17 +106,7 @@
                                 <td>{{ $karyawan->nik }}</td>
                                 <td>{{ $karyawan->name }}</td>
                                 <td>{{ $karyawan->email }}</td>
-                                <td>
-                                    <button class="btn btn-info btn-sm" data-bs-toggle="tooltip" title="View">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="btn btn-warning btn-sm" data-bs-toggle="tooltip" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="btn btn-danger btn-sm" data-bs-toggle="tooltip" title="Delete">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
+                                <td>{{ number_format($karyawan->tabungan_sum_saldo) }}</td>
                             </tr>
                         @endforeach
                     </tbody>

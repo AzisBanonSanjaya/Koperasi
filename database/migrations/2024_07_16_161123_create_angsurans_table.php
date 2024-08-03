@@ -16,6 +16,9 @@ return new class extends Migration
             $table->decimal('jumlah_angsuran');
             $table->date('tanggal_jatuh_tempo');
             $table->date('tanggal_bayar');
+            $table->string('bukti_pembayaran');
+            $table->string('nik');
+            $table->string('nama');
             $table->string('metode_pembayaran');
             $table->timestamps();
         });

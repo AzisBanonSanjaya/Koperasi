@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use App\Models\Tabungan;
 use App\Models\Karyawan;
 use Illuminate\Http\Request;
@@ -13,7 +14,12 @@ class TabunganController extends Controller
      */
     public function index()
     {
-        $tabungans = Tabungan::all();
+        $nik = Auth::user()->role == 'user' ? Auth::user()->nik : '';
+        if(Auth::user()->role != 'user'){
+            $tabungans = Tabungan::all();
+        }else{
+            $tabungans = Tabungan::where('nik',  $nik)->get();
+        }
         return view('tabungan.index', compact('tabungans'));
     }
 
@@ -23,7 +29,8 @@ class TabunganController extends Controller
     public function create()
     {
         $karyawans = Karyawan::all();
-        return view('tabungan.create', compact('karyawans'));
+        $nik = Auth::user()->role == 'user' ? Auth::user()->nik : '';
+        return view('tabungan.create', compact('karyawans','nik'));
     }
 
     /**
@@ -32,10 +39,12 @@ class TabunganController extends Controller
     public function store(Request $request)
     {
         $tabungan = new Tabungan;
+        $tabungan->nik = $request->nik;
+        $tabungan->nama = $request->nama;
         $tabungan->jenis_transaksi = $request->jenis_transaksi;
-        $tabungan->jumlah_transaksi = $request->jumlah_transaksi;
+        $tabungan->jumlah_transaksi = str_replace(',', '', $request->jumlah_transaksi);
         $tabungan->tanggal_transaksi = $request->tanggal_transaksi;
-        $tabungan->saldo = $request->saldo;
+        $tabungan->saldo = str_replace(',', '', $request->saldo);
         $tabungan->save();
         return redirect()->route('tabungan.index')->with('success', 'tabungan created successfully');
     }
@@ -54,7 +63,9 @@ class TabunganController extends Controller
      */
     public function edit(Tabungan $tabungan)
     {
-        return view('tabungan.edit', compact('tabungan'));
+        $karyawans = Karyawan::all();
+        $nik = Auth::user()->role == 'user' ? Auth::user()->nik : '';
+        return view('tabungan.edit', compact('tabungan','karyawans','nik'));
     }
 
     /**
@@ -65,9 +76,9 @@ class TabunganController extends Controller
         $tabungan->nik = $request->nik;
         $tabungan->nama = $request->nama;
         $tabungan->jenis_transaksi = $request->jenis_transaksi;
-        $tabungan->jumlah_transaksi = $request->jumlah_transaksi;
+        $tabungan->jumlah_transaksi = str_replace(',', '', $request->jumlah_transaksi);
         $tabungan->tanggal_transaksi = $request->tanggal_transaksi;
-        $tabungan->saldo = $request->saldo;
+        $tabungan->saldo = str_replace(',', '', $request->saldo);
         $tabungan->save();
         return redirect()->route('tabungan.index')->with('success', 'tabungan created successfully');
     }

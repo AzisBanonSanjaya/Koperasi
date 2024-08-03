@@ -13,6 +13,8 @@
             <thead>
                 <tr>
                     <th scope="col">No</th> 
+                    <th scope="col">Nik</th>
+                    <th scope="col">Nama</th>
                     <th scope="col">Jumlah Pinjaman</th>
                     <th scope="col">Tanggal Pinjaman</th>
                     <th scope="col">Jangka Waktu</th>
@@ -26,12 +28,14 @@
                 @foreach ($pinjamans as $index => $pinjaman)
                     <tr>
                         <th scope="row">{{ $index + 1 }}</th>
-                        <td>{{ $pinjaman->jumlah_pinjaman }}</td>
+                        <td>{{ $pinjaman->nik }}</td>
+                        <td>{{ $pinjaman->nama }}</td>
+                        <td>{{ "Rp. ". number_format($pinjaman->jumlah_pinjaman) }}</td>
                         <td>{{ $pinjaman->tanggal_pinjam }}</td>
                         <td>{{ $pinjaman->jangka_waktu }}</td>
-                        <td>{{ $pinjaman->bunga_persen }}</td>
-                        <td>{{ $pinjaman->total_bunga }}</td>
-                        <td>{{ $pinjaman->total_angsuran }}</td>
+                        <td>{{ number_format($pinjaman->bunga_persen, 2) ." %" }}</td>
+                        <td>{{ "Rp. ". number_format($pinjaman->total_bunga) }}</td>
+                        <td>{{ "Rp. ". number_format($pinjaman->total_angsuran) }}</td>
                         <td>
                             <a href="{{ route('pinjaman.edit', $pinjaman->id) }}" class="btn btn-sm btn-warning">Edit</a>
                             <form action="{{ route('pinjaman.destroy', $pinjaman->id) }}" method="POST" class="d-inline">

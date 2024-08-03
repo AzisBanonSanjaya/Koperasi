@@ -24,7 +24,7 @@
                 <tr>
                     <td>{{ $karyawan->nik }}</td>
                     <td>{{ $karyawan->name }}</td>
-                    <td>{{ $karyawan->departemen }}</td>
+                    <td>{{ $karyawan->departemen->name ?? '-' }}</td>
                     <td>{{ \Carbon\Carbon::parse($karyawan->tanggal_bergabung)->format('d-m-Y') }}</td>
                     <td>{{ \Carbon\Carbon::parse($karyawan->expired)->format('d-m-Y') }}</td>
                     <td>{{ $karyawan->status_keanggotaan }}</td>

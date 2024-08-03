@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->integer('jumlah_pinjaman');
             $table->date('tanggal_pinjam');
-            $table->date('jangka_waktu');
+            $table->string('nik');
+            $table->string('nama');
+            $table->string('jangka_waktu');
             $table->decimal('bunga_persen');
             $table->decimal('total_bunga');
             $table->decimal('total_angsuran');

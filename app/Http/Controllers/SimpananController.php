@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use App\Models\Karyawan;
 use App\Models\Simpanan;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,7 @@ class SimpananController extends Controller
     public function index()
     {
         if(Auth::user()->role == 'user'){
-            $simpanans = Simpanan::where('nama', Auth::user()->name)->get();
+            $simpanans = Simpanan::where('nik', Auth::user()->nik)->get();
         }else{
             $simpanans = Simpanan::all();
         }
@@ -26,7 +27,9 @@ class SimpananController extends Controller
      */
     public function create()
     {
-        return view('simpanan.create');
+        $karyawans = Karyawan::all();
+        $nik = Auth::user()->role == 'user' ? Auth::user()->nik : '';
+        return view('simpanan.create', compact('karyawans','nik'));
     }
 
     /**
@@ -38,16 +41,15 @@ class SimpananController extends Controller
             'nik' => 'required|string',
             'nama' => 'required|string',
             'jenis_simpanan' => 'required|string',
-            'jumlah' => 'required|numeric',
+            'jumlah' => 'required',
             'keterangan' => 'required|string',
             'tanggal_simpanan' => 'required|date',
         ]);
-
         $simpanan = new Simpanan;
         $simpanan->nik = $request->nik;
         $simpanan->nama = $request->nama;
         $simpanan->jenis_simpanan = $request->jenis_simpanan;
-        $simpanan->jumlah = $request->jumlah;
+        $simpanan->jumlah = str_replace(',','',$request->jumlah);
         $simpanan->keterangan = $request->keterangan;
         $simpanan->tanggal_simpanan = $request->tanggal_simpanan;
         $simpanan->save();
@@ -68,7 +70,9 @@ class SimpananController extends Controller
      */
     public function edit(Simpanan $simpanan)
     {
-        return view('simpanan.edit', compact('simpanan'));
+        $karyawans = Karyawan::all();
+        $nik = Auth::user()->role == 'user' ? Auth::user()->nik : '';
+        return view('simpanan.edit', compact('simpanan','karyawans','nik'));
     }
 
     /**

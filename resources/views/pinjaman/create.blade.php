@@ -15,8 +15,15 @@
                 <form action="{{ route('pinjaman.store') }}" method="post">
                     @csrf
                 <div class="form-group">
-                    <label for="nik">Nik</label>
-                    <input type="text" class="form-control" id="nik" name="nik" value="{{ auth()->user()->nik }}" readonly required>
+                    <label for="nik" class="form-label">Nik</label>
+                    <select class="form-select {{$nik ? 'select-readonly' : ''}} " id="nik" name="nik" required >
+                        <option value="" disabled selected>Select a Nik</option>
+                        @foreach($karyawans as $karyawan)
+                            <option value="{{ $karyawan->nik }}" {{$nik == $karyawan->nik ? 'selected' : ''}} data-name="{{$karyawan->name}}" data-email="{{$karyawan->email}}">
+                                {{ $karyawan->nik }}
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="nama">Nama</label>
@@ -24,7 +31,7 @@
                 </div>
                     <div class="form-group">
                         <label for="jumlah_pinjaman">Jumlah Pinjaman</label>
-                        <input type="text" class="form-control" id="jumlah_pinjaman" name="jumlah_pinjaman" required>
+                        <input type="text" class="form-control currency" id="jumlah_pinjaman" name="jumlah_pinjaman" required>
                     </div>
                     <div class="form-group my-2">
                         <label for="bunga_persen">Bunga Persen</label>
@@ -86,13 +93,13 @@
             });
 
             function calculateTotal() {
-                let jumlah_pinjaman = parseFloat($("#jumlah_pinjaman").val()) || 0;
+                let jumlah_pinjaman = parseFloat($("#jumlah_pinjaman").val().split(',').join('')) || 0;
                 let bunga_persen = parseFloat($("#bunga_persen").val()) || 0;
                 let estimasi = parseFloat($("#estimasi").val()) || 0;
                 let jangka_waktu = $("#jangka_waktu").find(':selected').val();
 
                 let total_bunga = (jumlah_pinjaman * (bunga_persen / 100)) * estimasi;
-                $("#total_bunga").val(total_bunga.toFixed(2));
+                $("#total_bunga").val(parseInt(total_bunga.toFixed(2), 10).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 
                 let total_angsuran = 0;
                 if (jangka_waktu === 'bulan') {
@@ -101,8 +108,15 @@
                     total_angsuran = (jumlah_pinjaman + total_bunga) / (estimasi * 12);
                 }
 
-                $("#total_angsuran").val(total_angsuran.toFixed(2));
+                $("#total_angsuran").val(parseInt(total_angsuran.toFixed(2), 10).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
             }
+
+            $("#nik").on("change", function(){
+                let nik = $(this).val();
+                let name = $(this).find(':selected').attr('data-name');
+                $("#nama").val(name);
+            });
+            $("#nik").trigger('change');
         });
     </script>
 @endpush

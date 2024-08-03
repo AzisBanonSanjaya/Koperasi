@@ -88,4 +88,9 @@ class User extends Authenticatable
     {
         return $query->where('id', '!=', 1);
     }
+
+    public function tabungan()
+    {
+        return $this->hasMany(Tabungan::class, 'nik', 'nik');
+    }
 }

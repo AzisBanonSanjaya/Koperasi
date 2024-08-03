@@ -18,6 +18,9 @@
         .invalid-feedback {
             display: block;
         }
+        .select-readonly{
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
@@ -37,27 +40,37 @@
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     
-    <!-- <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            @if (session('error'))
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: '{{ session('error') }}',
-                    footer: '<a href="#">Why do I have this issue?</a>'
-                });
-            @endif
+    <script>
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     @if (session('error'))
+        //         Swal.fire({
+        //             icon: 'error',
+        //             title: 'Oops...',
+        //             text: '{{ session('error') }}',
+        //             footer: '<a href="#">Why do I have this issue?</a>'
+        //         });
+        //     @endif
 
-            @if (session('success'))
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success',
-                    text: '{{ session('success') }}'
-                });
-            @endif
+        //     @if (session('success'))
+        //         Swal.fire({
+        //             icon: 'success',
+        //             title: 'Success',
+        //             text: '{{ session('success') }}'
+        //         });
+        //     @endif
+        // });
+        $(document).ready(function () {
+            $(".currency").on("keyup", function() {
+                value = $(this).val().replace(/,/g, '');
+                if (!$.isNumeric(value) || value == NaN) {
+                    $(this).val('0').trigger('change');
+                    value = 0;
+                }
+                $(this).val(parseFloat(value, 10).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+            });
         });
     </script>
-     -->
+    
      @stack('scripts')
 </body>
 </html>

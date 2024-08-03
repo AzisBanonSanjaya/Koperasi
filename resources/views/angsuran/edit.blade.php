@@ -12,20 +12,33 @@
         <div class="row justify-content-center align-items-center">
             <div class="col-10 col-md-8 col-lg-6">
                 <h3>Edit Angsuran</h3>
-                <form action="{{ route('angsuran.update', $angsuran->id) }}" method="post">
+                <form action="{{ route('angsuran.update', $angsuran->id) }}" method="post" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <div class="form-group">
-                    <label for="nik">Nik</label>
-                    <input type="text" class="form-control" id="nik" name="nik" value="{{ auth()->user()->nik }}" readonly required>
-                </div>
-                <div class="form-group">
-                    <label for="nama">Nama</label>
-                    <input type="text" class="form-control" id="nama" name="nama" value="{{ auth()->user()->name }}" readonly required>
-                </div>
+                        <label for="nik" class="form-label">Nik</label>
+                        <select class="form-select {{$nik ? 'select-readonly' : ''}} " id="nik" name="nik" required >
+                            <option value="" disabled selected>Select a Nik</option>
+                            @foreach($karyawans as $karyawan)
+                                @if(empty($nik))
+                                <option value="{{ $karyawan->nik }}" {{$angsuran->nik == $karyawan->nik ? 'selected' : ''}} data-name="{{$karyawan->name}}" data-email="{{$karyawan->email}}">
+                                    {{ $karyawan->nik }}
+                                </option>
+                                @else
+                                <option value="{{ $karyawan->nik }}" {{$nik == $karyawan->nik ? 'selected' : ''}} data-name="{{$karyawan->name}}" data-email="{{$karyawan->email}}">
+                                    {{ $karyawan->nik }}
+                                </option>
+                                @endif
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="nama">Nama</label>
+                        <input type="text" class="form-control" id="nama" name="nama" value="{{ $angsuran->nama }}" readonly required>
+                    </div>
                     <div class="form-group">
                         <label for="jumlah_angsuran">Jumlah angsuran</label>
-                        <input type="text" class="form-control" id="jumlah_angsuran" name="jumlah_angsuran" value="{{$angsuran->jumlah_angsuran}}" required>
+                        <input type="text" class="form-control currency" id="jumlah_angsuran" name="jumlah_angsuran" value="{{number_format($angsuran->jumlah_angsuran)}}" required>
                     </div>
                     <div class="form-group">
                         <label for="tanggal_jatuh_tempo">Tanggal Jatuh Tempo</label>
@@ -39,11 +52,11 @@
                     <label for="metode_pembayaran">Metode Pembayaran</label>
                     <select class="form-select" id="metode_pembayaran" name="metode_pembayaran" required>
                         <option value="" disabled selected>Select Metode Pembayaran</option>
-                        <option value="cash">Cash</option>
-                        <option value="transfer">Transfer</option>
+                        <option value="cash" {{$angsuran->metode_pembayaran == 'cash' ? 'selected' : ''}}>Cash</option>
+                        <option value="transfer" {{$angsuran->metode_pembayaran == 'transfer' ? 'selected' : ''}}>Transfer</option>
                     </select>
                     </div>
-                    <div class="form-group my-2">
+                    <div class="form-group my-2" id="buktiWrapper">
                         <label for="bukti_pembayaran">Bukti Pembayaran</label>
                         <input type="file" class="form-control" id="bukti_pembayaran" name="bukti_pembayaran" required>
                     </div>
@@ -62,6 +75,16 @@
                 let name = $(this).find(':selected').data('name');
                 $("#nama").val(name);
             });
+            $("#metode_pembayaran").on("change", function(){
+                let metode_pembayaran =  $(this).find(':selected').text();
+                if(metode_pembayaran == 'Transfer'){
+                    $("#buktiWrapper").removeClass('hidden');
+                }else{
+                    $("#buktiWrapper").addClass('hidden');
+                }
+            });
+            $("#metode_pembayaran").trigger('change');
+            $("#nik").trigger('change');
         });
     </script>
 @endpush

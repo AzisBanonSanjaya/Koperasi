@@ -16,44 +16,58 @@
                     @csrf
                     @method('PUT')
                     <div class="form-group">
-                        <label for="nik">Nik</label>
-                        <input type="text" class="form-control" id="nik" name="nik" value="{{ auth()->user()->nik }}" readonly required>
+                        <label for="nik" class="form-label">Nik</label>
+                        <select class="form-select {{$nik ? 'select-readonly' : ''}} " id="nik" name="nik" required >
+                            <option value="" disabled selected>Select a Nik</option>
+                            @foreach($karyawans as $karyawan)
+                                @if(empty($nik))
+                                <option value="{{ $karyawan->nik }}" {{$pinjaman->nik == $karyawan->nik ? 'selected' : ''}} data-name="{{$karyawan->name}}" data-email="{{$karyawan->email}}">
+                                    {{ $karyawan->nik }}
+                                </option>
+                                @else
+                                <option value="{{ $karyawan->nik }}" {{$nik == $karyawan->nik ? 'selected' : ''}} data-name="{{$karyawan->name}}" data-email="{{$karyawan->email}}">
+                                    {{ $karyawan->nik }}
+                                </option>
+                                @endif
+                            @endforeach
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="nama">Nama</label>
-                        <input type="text" class="form-control" id="nama" name="nama" value="{{ auth()->user()->name }}" readonly required>
+                        <input type="text" class="form-control" id="nama" name="nama" value="{{ $pinjaman->nama }}" readonly required>
                     </div>
                     <div class="form-group">
                         <label for="jumlah_pinjaman">Jumlah Pinjaman</label>
-                        <input type="text" class="form-control" id="jumlah_pinjaman" name="jumlah_pinjaman" value="{{$pinjaman->jumlah_pinjaman}}" required>
+                        <input type="text" class="form-control currency" id="jumlah_pinjaman" name="jumlah_pinjaman" value="{{number_format($pinjaman->jumlah_pinjaman)}}" required>
                     </div>
-                    <div class="form-group">
-                        <label for="total_bunga">Total Bunga</label>
-                        <input type="text" class="form-control" id="total_bunga" name="total_bunga" value="{{$pinjaman->total_bunga}}" required>
-                    </div>
+                   
                     <div class="form-group my-2">
                         <label for="jangka_waktu">Jangka Waktu</label>
                         <select class="form-select" id="jangka_waktu" name="jangka_waktu" required>
                             <option value="" disabled selected>Select</option>
-                            <option value="bulan" {{ $pinjaman->jangka_waktu == 'bulan' ? 'selected' : '' }}>Bulan</option>
-                            <option value="tahun" {{ $pinjaman->jangka_waktu == 'tahun' ? 'selected' : '' }}>Tahun</option>
+                            <option value="bulan" {{ $jangka_waktu[1] == 'bulan' ? 'selected' : '' }}>Bulan</option>
+                            <option value="tahun" {{ $jangka_waktu[1] == 'tahun' ? 'selected' : '' }}>Tahun</option>
                         </select>
                     </div>
                     <div class="form-group my-2" id="estimasiWrapper" style="display: none;">
                         <label for="estimasi" id="label-estimasi"></label>
-                        <input type="text" class="form-control" id="estimasi" name="estimasi" value="{{ $pinjaman->estimasi }}" required>
+                        <input type="text" class="form-control" id="estimasi" name="estimasi" value="{{ $jangka_waktu[0] }}" required>
                     </div>
                     <div class="form-group">
                         <label for="bunga_persen">Bunga Persen</label>
-                        <input type="text" class="form-control" id="bunga_persen" name="bunga_persen" value="{{$pinjaman->bunga_persen}}" required>
+                        <input type="text" class="form-control" id="bunga_persen" name="bunga_persen" value="{{number_format($pinjaman->bunga_persen, 2)}}" required>
                     </div>
                     <div class="form-group">
                         <label for="tanggal_pinjam">Tanggal Pinjaman</label>
                         <input type="date" class="form-control" id="tanggal_pinjam" name="tanggal_pinjam" value="{{$pinjaman->tanggal_pinjam}}" required>
                     </div>
                     <div class="form-group">
+                        <label for="total_bunga">Total Bunga</label>
+                        <input type="text" class="form-control" id="total_bunga" name="total_bunga" value="{{number_format($pinjaman->total_bunga)}}" readonly required>
+                    </div>
+                    <div class="form-group">
                         <label for="total_angsuran">Total Angsuran</label>
-                        <input type="text" class="form-control" id="total_angsuran" name="total_angsuran" value="{{$pinjaman->total_angsuran}}" required>
+                        <input type="text" class="form-control" id="total_angsuran" name="total_angsuran" value="{{number_format($pinjaman->total_angsuran)}}" readonly required>
                     </div>
                     <br>
                     <button type="submit" class="btn btn-primary">Update Pinjaman</button>
@@ -80,6 +94,7 @@
                 }
             }
 
+            
             toggleEstimasiWrapper();
 
             $("#jangka_waktu").on("change", function(){
@@ -87,15 +102,36 @@
             });
 
             $("#jumlah_pinjaman, #bunga_persen, #estimasi").on('input', function(){
-                let jumlah_pinjaman = parseFloat($("#jumlah_pinjaman").val());
-                let bunga_persen = parseFloat($("#bunga_persen").val());
-                let estimasi = parseInt($("#estimasi").val());
-
-                if (!isNaN(jumlah_pinjaman) && !isNaN(bunga_persen) && !isNaN(estimasi)) {
-                    let bunga = (jumlah_pinjaman * (bunga_persen / 100)) * estimasi;
-                    $("#total_bunga").val(bunga);
-                }
+                calculateTotal();
             });
+
+            function calculateTotal() {
+                let jumlah_pinjaman = parseFloat($("#jumlah_pinjaman").val().split(',').join('')) || 0;
+                let bunga_persen = parseFloat($("#bunga_persen").val()) || 0;
+                let estimasi = parseFloat($("#estimasi").val()) || 0;
+                let jangka_waktu = $("#jangka_waktu").find(':selected').val();
+
+                let total_bunga = (jumlah_pinjaman * (bunga_persen / 100)) * estimasi;
+                $("#total_bunga").val(parseFloat(total_bunga.toFixed(2), 10).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+
+                let total_angsuran = 0;
+                if (jangka_waktu === 'bulan') {
+                    total_angsuran = (jumlah_pinjaman + total_bunga) / (estimasi);
+                } else if (jangka_waktu === 'tahun') {
+                    total_angsuran = (jumlah_pinjaman + total_bunga) / (estimasi * 12);
+                }
+
+                $("#total_angsuran").val(parseFloat(total_angsuran.toFixed(2), 10).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+            }
+
+            
+            $("#nik").on("change", function(){
+                let nik = $(this).val();
+                let name = $(this).find(':selected').attr('data-name');
+                $("#nama").val(name);
+            });
+            $("#nik").trigger('change');
+            $("#jangka_waktu").trigger('change');
         });
     </script>
 @endpush

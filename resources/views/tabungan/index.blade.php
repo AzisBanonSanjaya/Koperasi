@@ -13,6 +13,8 @@
             <thead>
                 <tr>
                     <th scope="col">No</th>
+                    <th scope="col">NIK</th>
+                    <th scope="col">Nama</th>
                     <th scope="col">Jenis Transaksi</th>
                     <th scope="col">Jumlah Transaksi</th>
                     <th scope="col">Tanggal Transaksi</th>
@@ -24,10 +26,12 @@
                 @foreach ($tabungans as $index => $tabungan)
                     <tr>
                         <th scope="row">{{ $index + 1 }}</th>
+                        <td>{{ $tabungan->nik }}</td>
+                        <td>{{ $tabungan->nama }}</td>
                         <td>{{ $tabungan->jenis_transaksi }}</td>
-                        <td>{{ $tabungan->jumlah_transaksi }}</td>
+                        <td>{{ number_format($tabungan->jumlah_transaksi) }}</td>
                         <td>{{ $tabungan->tanggal_transaksi }}</td>
-                        <td>{{ $tabungan->saldo }}</td>
+                        <td>{{ number_format($tabungan->saldo) }}</td>
                         <td>
                             <a href="{{ route('tabungan.edit', $tabungan->id) }}" class="btn btn-sm btn-warning">Edit</a>
                             <form action="{{ route('tabungan.destroy', $tabungan->id) }}" method="POST" class="d-inline">

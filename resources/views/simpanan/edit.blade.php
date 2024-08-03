@@ -17,11 +17,24 @@
                     @method('PUT')
                     <div class="form-group">
                     <label for="nik">Nik</label>
-                    <input type="text" class="form-control" id="nik" name="nik" value="{{ auth()->user()->nik }}" readonly required>
+                    <select class="form-select {{$nik ? 'select-readonly' : ''}} " id="nik" name="nik" required >
+                        <option value="" disabled selected>Select a Nik</option>
+                        @foreach($karyawans as $karyawan)
+                            @if(empty($nik))
+                            <option value="{{ $karyawan->nik }}" {{$simpanan->nik == $karyawan->nik ? 'selected' : ''}} data-name="{{$karyawan->name}}" data-email="{{$karyawan->email}}">
+                                {{ $karyawan->nik }}
+                            </option>
+                            @else
+                            <option value="{{ $karyawan->nik }}" {{$nik == $karyawan->nik ? 'selected' : ''}} data-name="{{$karyawan->name}}" data-email="{{$karyawan->email}}">
+                                {{ $karyawan->nik }}
+                            </option>
+                            @endif
+                        @endforeach
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="nama">Nama</label>
-                    <input type="text" class="form-control" id="nama" name="nama" value="{{ auth()->user()->name }}" readonly required>
+                    <input type="text" class="form-control" id="nama" name="nama" value="{{ $simpanan->nama }}" readonly required>
                 </div>
                     <div class="form-group">
                         <label for="jenis_simpanan">Jumlah simpanan</label>
@@ -29,7 +42,7 @@
                     </div>
                     <div class="form-group">
                         <label for="jumlah">Total Bunga</label>
-                        <input type="text" class="form-control" id="jumlah" name="jumlah" value="{{$simpanan->jumlah}}" required>
+                        <input type="text" class="form-control currency" id="jumlah" name="jumlah" value="{{ number_format($simpanan->jumlah)}}" required>
                     </div>
                     <div class="form-group">
                         <label for="keterangan">keterangan</label>
@@ -37,7 +50,7 @@
                     </div>
                     <div class="form-group">
                         <label for="tanggal_simpanan">Tanggal Simpanan</label>
-                        <input type="date" class="form-control" id="tanggal_simpanan" name="tanggal_simpanan" value="{{$simpanan->bunga_persen}}" required>
+                        <input type="date" class="form-control" id="tanggal_simpanan" name="tanggal_simpanan" value="{{$simpanan->tanggal_simpanan}}" required>
                     </div>
                     <br>
                     <button type="submit" class="btn btn-primary">Update simpanan</button>

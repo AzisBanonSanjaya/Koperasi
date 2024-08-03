@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use App\Models\Pinjaman;
 use Illuminate\Http\Request;
 use App\Models\Karyawan;
@@ -11,17 +12,24 @@ class PinjamanController extends Controller
     // Menampilkan daftar pinjaman
     public function index()
     {
-        $pinjamans = Pinjaman::all();
+        $nik = Auth::user()->role == 'user' ? Auth::user()->nik : '';
+        if(Auth::user()->role != 'user'){
+            $pinjamans = Pinjaman::all();
+        }else{
+            $pinjamans = Pinjaman::where('nik',  $nik)->get();
+        }
+        
         return view('pinjaman.index', compact('pinjamans'));
     }
 
     // Menampilkan form untuk membuat pinjaman baru
     public function create()
     {
-        {
-            $karyawans = Karyawan::all(); // Fetch all karyawan records
-            return view('pinjaman.create', compact('karyawans'));
-        }
+        
+        $karyawans = Karyawan::all();
+        $nik = Auth::user()->role == 'user' ? Auth::user()->nik : '';
+        return view('pinjaman.create', compact('karyawans','nik'));
+        
     }
 
     // Menyimpan data pinjaman baru
@@ -29,15 +37,20 @@ class PinjamanController extends Controller
     {
         // Validasi input
         $validatedData = $request->validate([
-            'jumlah_pinjaman' => 'required|numeric',
+            'jumlah_pinjaman' => 'required',
             'tanggal_pinjam' => 'required|date',
             'jangka_waktu' => 'required|string',
             'estimasi' => 'required|integer',
             'bunga_persen' => 'required|numeric',
-            'total_bunga' => 'required|numeric',
-            'total_angsuran' => 'required|numeric',
+            'total_bunga' => 'required',
+            'total_angsuran' => 'required',
+            'nik' => 'required',
+            'nama' => 'required',
         ]);
-
+        $validatedData['jumlah_pinjaman'] = str_replace(',', '', $request->jumlah_pinjaman);
+        $validatedData['total_bunga'] = str_replace(',', '', $request->total_bunga);
+        $validatedData['total_angsuran'] = str_replace(',', '', $request->total_angsuran);
+        $validatedData['jangka_waktu'] = $request->estimasi.' '.$request->jangka_waktu;
         // Buat instance baru dari model Pinjaman
         $pinjaman = new Pinjaman($validatedData);
         $pinjaman->save();
@@ -50,7 +63,10 @@ class PinjamanController extends Controller
     public function edit($id)
     {
         $pinjaman = Pinjaman::findOrFail($id);
-        return view('pinjaman.edit', compact('pinjaman'));
+        $karyawans = Karyawan::all();
+        $nik = Auth::user()->role == 'user' ? Auth::user()->nik : '';
+        $jangka_waktu = explode(' ', $pinjaman->jangka_waktu);
+        return view('pinjaman.edit', compact('pinjaman','karyawans','nik', 'jangka_waktu'));
     }
 
     // Memperbarui data pinjaman
@@ -58,14 +74,20 @@ class PinjamanController extends Controller
     {
         // Validasi input
         $validatedData = $request->validate([
-            'jumlah_pinjaman' => 'required|numeric',
+            'jumlah_pinjaman' => 'required',
             'tanggal_pinjam' => 'required|date',
             'jangka_waktu' => 'required|string',
             'estimasi' => 'required|integer',
             'bunga_persen' => 'required|numeric',
-            'total_bunga' => 'required|numeric',
-            'total_angsuran' => 'required|numeric',
+            'total_bunga' => 'required',
+            'total_angsuran' => 'required',
+            'nik' => 'required',
+            'nama' => 'required',
         ]);
+        $validatedData['jumlah_pinjaman'] = str_replace(',', '', $request->jumlah_pinjaman);
+        $validatedData['total_bunga'] = str_replace(',', '', $request->total_bunga);
+        $validatedData['total_angsuran'] = str_replace(',', '', $request->total_angsuran);
+        $validatedData['jangka_waktu'] = $request->estimasi.' '.$request->jangka_waktu;
 
         // Temukan pinjaman berdasarkan ID dan perbarui
         $pinjaman = Pinjaman::findOrFail($id);

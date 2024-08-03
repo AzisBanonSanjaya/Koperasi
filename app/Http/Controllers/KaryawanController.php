@@ -41,15 +41,16 @@ class KaryawanController extends Controller
      */
     public function store(Request $request)
     {
-        // $request->validate([
-        //     'nik' => 'required|unique:karyawan|digits:16',
-        //     'nama' => 'required|string|max:100',
-        //     'jenis_kelamin' => 'required|in:laki-laki,perempuan',
-        //     'alamat' => 'required|max:200',
-        //     'kota' => 'required|max:20',
-        //     'telepon' => 'required|max:12',
-        //     'pengurus' => 'required|in:pengurus,bukan_pengurus',
-        // ]);  
+        $request->validate([
+            'nik' => 'required|unique:karyawans|digits:16',
+            'name' => 'required|unique:karyawans|string|max:100',
+            'departemen_id' => 'required',
+            'jabatan_id' => 'required',
+            'tanggal_bergabung' => 'required',
+            'alamat' => 'required',
+            'no_telepon' => 'required',
+            'email' => 'required',
+        ]);  
 
         $karyawan = new Karyawan;
         $karyawan->nik = $request->nik;
