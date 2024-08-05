@@ -132,6 +132,13 @@
             });
             $("#nik").trigger('change');
             $("#jangka_waktu").trigger('change');
+
+            $("#jumlah_pinjaman").on('change', function(){
+                let jumlah_pinjaman = parseFloat($("#jumlah_pinjaman").val().split(',').join('')) || 0;
+                if(jumlah_pinjaman >= '3000000') {
+                    alert('Pinjaman tidak boleh lebih dari 3.000.000')
+                }
+            });
         });
     </script>
 @endpush

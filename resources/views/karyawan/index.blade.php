@@ -32,7 +32,7 @@
                         <td>{{ $k->status_keanggotaan }}</td>
                         <td>
                             <a href="{{ $k->nik ? route('karyawan.show', $k->nik) : '#' }}" class="btn btn-sm btn-info my-2">Detail</a>
-                            <a href="{{ route('karyawan.edit', $k->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                            <!-- <a href="{{ route('karyawan.edit', $k->id) }}" class="btn btn-sm btn-warning">Edit</a> -->
                             <form action="{{ route('karyawan.destroy', $k->id) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')

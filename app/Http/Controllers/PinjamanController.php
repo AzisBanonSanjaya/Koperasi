@@ -51,12 +51,25 @@ class PinjamanController extends Controller
         $validatedData['total_bunga'] = str_replace(',', '', $request->total_bunga);
         $validatedData['total_angsuran'] = str_replace(',', '', $request->total_angsuran);
         $validatedData['jangka_waktu'] = $request->estimasi.' '.$request->jangka_waktu;
-        // Buat instance baru dari model Pinjaman
-        $pinjaman = new Pinjaman($validatedData);
-        $pinjaman->save();
+        $validatedData['sisa_angsuran'] = str_replace(',', '', $request->jumlah_pinjaman);
 
-        // Redirect ke halaman index dengan pesan sukses
-        return redirect()->route('pinjaman.index')->with('success', 'Pinjaman berhasil dibuat.');
+        $pinjaman = Pinjaman::where('nik', $request->nik)->where('sisa_angsuran', '>', 0)->first();
+
+        if($pinjaman) {
+            return redirect()->route('pinjaman.index')->with('error', 'Pinjaman sudah beres!');
+        }
+
+        // Buat instance baru dari model Pinjaman
+        if($request->jumlah_pinjaman <= '3000000') {
+            $pinjaman = new Pinjaman($validatedData);
+            $pinjaman->save();
+
+             // Redirect ke halaman index dengan pesan sukses
+            return redirect()->route('pinjaman.index')->with('success', 'Pinjaman berhasil dibuat.');
+        } else {
+            // Redirect ke halaman index dengan pesan sukses
+            return redirect()->route('pinjaman.index')->with('error', 'Pinjaman tidak boleh dari 3.000.000');
+        }
     }
 
     // Menampilkan form untuk mengedit pinjaman
@@ -88,6 +101,7 @@ class PinjamanController extends Controller
         $validatedData['total_bunga'] = str_replace(',', '', $request->total_bunga);
         $validatedData['total_angsuran'] = str_replace(',', '', $request->total_angsuran);
         $validatedData['jangka_waktu'] = $request->estimasi.' '.$request->jangka_waktu;
+        $validatedData['sisa_angsuran'] = str_replace(',', '', $request->jumlah_pinjaman);
 
         // Temukan pinjaman berdasarkan ID dan perbarui
         $pinjaman = Pinjaman::findOrFail($id);

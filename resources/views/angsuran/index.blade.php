@@ -40,7 +40,7 @@
                         @endif
                     </td>
                     <td>
-                        <a href="{{ route('angsuran.edit', $angsuran->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                        <!-- <a href="{{ route('angsuran.edit', $angsuran->id) }}" class="btn btn-warning btn-sm">Edit</a> -->
                         <form action="{{ route('angsuran.destroy', $angsuran->id) }}" method="POST" class="d-inline">
                             @csrf
                             @method('DELETE')

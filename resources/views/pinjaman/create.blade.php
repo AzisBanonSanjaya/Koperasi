@@ -94,6 +94,11 @@
 
             function calculateTotal() {
                 let jumlah_pinjaman = parseFloat($("#jumlah_pinjaman").val().split(',').join('')) || 0;
+                
+                // if(jumlah_pinjaman >= '3000000') {
+                //     alert('Pinjaman tidak boleh lebih dari 3.000.000')
+                // }
+
                 let bunga_persen = parseFloat($("#bunga_persen").val()) || 0;
                 let estimasi = parseFloat($("#estimasi").val()) || 0;
                 let jangka_waktu = $("#jangka_waktu").find(':selected').val();
@@ -117,6 +122,13 @@
                 $("#nama").val(name);
             });
             $("#nik").trigger('change');
+            
+            $("#jumlah_pinjaman").on('change', function(){
+                let jumlah_pinjaman = parseFloat($("#jumlah_pinjaman").val().split(',').join('')) || 0;
+                if(jumlah_pinjaman >= '3000000') {
+                    alert('Pinjaman tidak boleh lebih dari 3.000.000')
+                }~~
+            });
         });
     </script>
 @endpush

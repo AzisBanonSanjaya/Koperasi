@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Auth;
 use App\Models\Angsuran;
 use App\Models\Karyawan;
+use App\Models\Pinjaman;
 use Illuminate\Http\Request;
 
 class AngsuranController extends Controller
@@ -50,6 +51,16 @@ class AngsuranController extends Controller
         if($request->file('bukti_pembayaran')){
             $file = $request->file('bukti_pembayaran');
             $path = $file->store('bukti_pembayaran', 'public');
+        }
+        $pinjaman = Pinjaman::where('nik', $request->nik)->where('sisa_angsuran', '>', 0)->first();
+
+        if($pinjaman) {
+            $pinjaman->update([
+                'sisa_angsuran' => $pinjaman->sisa_angsuran - str_replace(',', '', $request->jumlah_angsuran)
+            ]);
+        } else {
+            return redirect()->route('angsuran.index')->with('error', 'Angsuran sudah beres!');
+          
         }
         $angsuran = new Angsuran;
         $angsuran->nik = $request->nik;
