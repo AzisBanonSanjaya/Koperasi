@@ -6,7 +6,8 @@
     <div class="container mt-5">
         <div class="row">
             <div class="col-lg-12">
-                <a href="{{ route('karyawan.create') }}" class="btn btn-primary float-end my-2">Tambah Karyawan</a>
+                <a href="{{ route('karyawan.create') }}" class="btn btn-primary float-end my-2 ">Tambah Karyawan</a>
+                <a href="{{ route('export.pdf.karyawan') }}" class="btn btn-info float-end my-2 mx-2">Export PDF Karyawan</a>
             </div>
         </div>
         <table id="karyawanTable" class="table">

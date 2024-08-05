@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Tabungan;
 use App\Models\Karyawan;
 use Illuminate\Http\Request;
@@ -91,5 +92,18 @@ class TabunganController extends Controller
         $tabungan->delete();
 
         return redirect()->route('tabungan.index')->with('success', 'tabungan deleted successfully');
+    }
+
+    public function exportPDF()
+    {
+        $nik = Auth::user()->role == 'user' ? Auth::user()->nik : '';
+        if(Auth::user()->role != 'user'){
+            $tabungans = Tabungan::all();
+        }else{
+            $tabungans = Tabungan::where('nik',  $nik)->get();
+        }
+        $data = ['tabungans' => $tabungans];
+        $pdf = Pdf::loadView('tabungan.exportPdf', $data);
+        return $pdf->download('tabungan.pdf');
     }
 }

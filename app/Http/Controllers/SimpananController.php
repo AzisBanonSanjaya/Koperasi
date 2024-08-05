@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Karyawan;
 use App\Models\Simpanan;
 use Illuminate\Http\Request;
@@ -108,5 +109,17 @@ class SimpananController extends Controller
         $simpanan->delete();
 
         return redirect()->route('simpanan.index')->with('success', 'Simpanan deleted successfully');
+    }
+
+    public function exportPDF()
+    {
+        if(Auth::user()->role == 'user'){
+            $simpanans = Simpanan::where('nik', Auth::user()->nik)->get();
+        }else{
+            $simpanans = Simpanan::all();
+        }
+        $data = ['simpanans' => $simpanans];
+        $pdf = Pdf::loadView('simpanan.exportPdf', $data);
+        return $pdf->download('simpanan.pdf');
     }
 }

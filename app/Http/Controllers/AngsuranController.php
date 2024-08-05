@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Angsuran;
 use App\Models\Karyawan;
 use App\Models\Pinjaman;
@@ -133,5 +134,18 @@ class AngsuranController extends Controller
         $angsuran->delete();
 
         return redirect()->route('angsuran.index')->with('success', 'Angsuran dihapus dengan sukses.');
+    }
+
+    public function exportPDF()
+    {
+        $nik = Auth::user()->role == 'user' ? Auth::user()->nik : '';
+        if(Auth::user()->role != 'user'){
+            $angsurans = Angsuran::all();
+        }else{
+            $angsurans = Angsuran::where('nik',  $nik)->get();
+        }
+        $data = ['angsurans' => $angsurans];
+        $pdf = Pdf::loadView('angsuran.exportPdf', $data);
+        return $pdf->download('angsuran.pdf');
     }
 }

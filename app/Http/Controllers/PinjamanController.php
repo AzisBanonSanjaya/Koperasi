@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Pinjaman;
 use Illuminate\Http\Request;
 use App\Models\Karyawan;
@@ -119,5 +120,20 @@ class PinjamanController extends Controller
 
         // Redirect ke halaman index dengan pesan sukses
         return redirect()->route('pinjaman.index')->with('success', 'Pinjaman berhasil dihapus.');
+    }
+    
+
+    public function exportPDF()
+    {
+        $nik = Auth::user()->role == 'user' ? Auth::user()->nik : '';
+        if(Auth::user()->role != 'user'){
+            $pinjamans = Pinjaman::all();
+        }else{
+            $pinjamans = Pinjaman::where('nik',  $nik)->get();
+        }
+        
+        $data = ['pinjamans' => $pinjamans];
+        $pdf = Pdf::loadView('pinjaman.exportPdf', $data);
+        return $pdf->download('pinjaman.pdf');
     }
 }

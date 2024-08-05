@@ -1,18 +1,43 @@
-@extends('layouts.main')
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Daftar Angsuran</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
-@section('title', 'Angsuran')
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
 
-@section('content')
-<div class="container mt-4">
-    <div class="row mb-3">
-        <div class="col-lg-12">
-            <a href="{{ route('angsuran.create') }}" class="btn btn-primary float-end">Tambah Angsuran</a>
-            <a href="{{ route('export.pdf.angsuran') }}" class="btn btn-info float-end my-2 mx-2">Export PDF Angsuran</a>
-        </div>
-    </div>
-    <div class="table-responsive">
-        <table class="table table-striped table-hover">
-            <thead>
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th, .table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .table tbody tr:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <h2>Daftar Angsuran</h2>
+    <table class="table">
+    <thead>
                 <tr>
                     <th scope="col">No</th>
                     <th scope="col">Nama</th>
@@ -21,7 +46,6 @@
                     <th scope="col">Tanggal Bayar</th>
                     <th scope="col">Metode Pembayaran</th>
                     <th scope="col">Bukti Pembayaran</th>
-                    <th scope="col">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -40,18 +64,9 @@
                             <span class="text-muted">Tidak Ada</span>
                         @endif
                     </td>
-                    <td>
-                        <!-- <a href="{{ route('angsuran.edit', $angsuran->id) }}" class="btn btn-warning btn-sm">Edit</a> -->
-                        <form action="{{ route('angsuran.destroy', $angsuran->id) }}" method="POST" class="d-inline">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                        </form>
-                    </td>
                 </tr>
                 @endforeach
             </tbody>
-        </table>
-    </div>
-</div>
-@endsection
+    </table>
+</body>
+</html>

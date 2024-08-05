@@ -7,6 +7,7 @@
     <div class="row mb-3">
         <div class="col-lg-12">
             <a href="{{ route('simpanan.create') }}" class="btn btn-primary float-end">Tambah Simpanan</a>
+            <a href="{{ route('export.pdf.simpanan') }}" class="btn btn-info float-end my-2 mx-2">Export PDF Simpanan</a>
         </div>
     </div>
     <div class="table-responsive">

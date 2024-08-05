@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Karyawan;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use App\Models\Departemen;
 use App\Models\Jabatan;
@@ -44,8 +45,8 @@ class KaryawanController extends Controller
         $request->validate([
             'nik' => 'required|unique:karyawans|digits:16',
             'name' => 'required|unique:karyawans|string|max:100',
-            'departemen_id' => 'required',
-            'jabatan_id' => 'required',
+            'departemen' => 'required',
+            'jabatan' => 'required',
             'tanggal_bergabung' => 'required',
             'alamat' => 'required',
             'no_telepon' => 'required',
@@ -127,6 +128,13 @@ public function destroy($id)
     $karyawan->delete();
 
     return redirect()->route('karyawan.index')->with('success', 'Karyawan deleted successfully');
+}
+
+public function exportPDF(){
+    $karyawan = Karyawan::all();
+    $data = ['karyawan' => $karyawan];
+    $pdf = Pdf::loadView('karyawan.exportPdf', $data);
+    return $pdf->download('karyawan.pdf');
 }
 
 

@@ -29,18 +29,21 @@ Route::group(['middleware' ], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     // Karyawan Routes
     Route::resource('karyawan', KaryawanController::class);
+    Route::get('export-pdf-karyawan', [KaryawanController::class,'exportPDF'])->name('export.pdf.karyawan');
 
     // Pinjaman Routes
     Route::resource('pinjaman', PinjamanController::class);
+    Route::get('export-pdf-pinjaman', [PinjamanController::class,'exportPDF'])->name('export.pdf.pinjaman');
 
     // Simpanan Routes
     Route::resource('simpanan', SimpananController::class);
-
+     Route::get('export-pdf-simpanan', [SimpananController::class,'exportPDF'])->name('export.pdf.simpanan');
     // Tabungan Routes
     Route::resource('tabungan', TabunganController::class);
-
+    Route::get('export-pdf-tabungan', [TabunganController::class,'exportPDF'])->name('export.pdf.tabungan');
     // Angsuran Routes
     Route::resource('angsuran', AngsuranController::class);
+    Route::get('export-pdf-angsuran', [AngsuranController::class,'exportPDF'])->name('export.pdf.angsuran');
 
     Route::resource('user', UserController::class);
 

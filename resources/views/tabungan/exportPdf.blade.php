@@ -1,17 +1,43 @@
-@extends('layouts.main')
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Daftar Tabungan</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
-@section('title', 'Data Pinjaman')
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
 
-@section('content')
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-lg-12">
-                <a href="{{route('tabungan.create')}}" class="btn btn-primary float-end my-2">Tambah Tabungan</a>
-                <a href="{{ route('export.pdf.tabungan') }}" class="btn btn-info float-end my-2 mx-2">Export PDF Tabungan</a>
-            </div>
-        </div>
-        <table class="table">
-            <thead>
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th, .table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .table tbody tr:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <h2>Daftar Tabungan</h2>
+    <table class="table">
+    <thead>
                 <tr>
                     <th scope="col">No</th>
                     <th scope="col">NIK</th>
@@ -20,7 +46,6 @@
                     <th scope="col">Jumlah Transaksi</th>
                     <th scope="col">Tanggal Transaksi</th>
                     <th scope="col">Saldo</th>
-                    <th scope="col">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -34,16 +59,9 @@
                         <td>{{ $tabungan->tanggal_transaksi }}</td>
                         <td>{{ number_format($tabungan->saldo) }}</td>
                         <td>
-                            <a href="{{ route('tabungan.edit', $tabungan->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                            <form action="{{ route('tabungan.destroy', $tabungan->id) }}" method="POST" class="d-inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                            </form>
-                        </td>
                     </tr>
                 @endforeach
             </tbody>
-        </table>
-    </div>
-@endsection
+    </table>
+</body>
+</html>

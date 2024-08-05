@@ -17,10 +17,16 @@
             <div class="form-group">
               <label for="nik">Nik</label>
               <input type="text" class="form-control" id="nik" name="nik" required>
+              @error('nik')
+                  <div class="invalid-feedback">{{ $message }}</div>
+              @enderror
             </div>
             <div class="form-group">
               <label for="nama">Name</label>
               <input type="text" class="form-control" id="name" name="name" required>
+              @error('name')
+                  <div class="invalid-feedback">{{ $message }}</div>
+              @enderror
             </div>
             <div class="form-group">
               <label for="departemen">Departemen</label>
@@ -30,6 +36,9 @@
                       <option value="{{ $d->id }}" >{{ $d->name}}</option>
                   @endforeach
               </select>
+              @error('departemen')
+                  <div class="invalid-feedback">{{ $message }}</div>
+              @enderror
             </div>
             <div class="form-group">
               <label for="jabatan">Jabatan</label>
@@ -39,20 +48,35 @@
                       <option value="{{ $j->id }}" >{{ $j->name}}</option>
                   @endforeach
               </select>
+              @error('jabatan')
+                  <div class="invalid-feedback">{{ $message }}</div>
+              @enderror
             <div class="form-group">
               <label for="tanggal_bergabung">Tanggal_Bergabung</label>
               <input type="date" class="form-control" id="tanggal_bergabung" name="tanggal_bergabung" required>
+              @error('tanggal_bergabung')
+                  <div class="invalid-feedback">{{ $message }}</div>
+              @enderror
             <div class="form-group">
               <label for="alamat">Alamat</label>
               <input type="text" class="form-control" id="alamat" name="alamat" required>
+              @error('alamat')
+                  <div class="invalid-feedback">{{ $message }}</div>
+              @enderror
             </div>
             <div class="form-group">
               <label for="no_telepon">No_Telepon</label>
               <input type="number" class="form-control" id="no_telepon" name="no_telepon" required>
+              @error('no_telepon')
+                  <div class="invalid-feedback">{{ $message }}</div>
+              @enderror
             </div>
             <div class="form-group">
               <label for="email">Email</label>
               <input type="text" class="form-control" id="email" name="email" required>
+              @error('email')
+                  <div class="invalid-feedback">{{ $message }}</div>
+              @enderror
             </div>
             </div>
             </div>
