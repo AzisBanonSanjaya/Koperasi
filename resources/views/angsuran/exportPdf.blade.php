@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daftar Angsuran</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
@@ -37,19 +39,19 @@
 <body>
     <h2>Daftar Angsuran</h2>
     <table class="table">
-    <thead>
-                <tr>
-                    <th scope="col">No</th>
-                    <th scope="col">Nama</th>
-                    <th scope="col">Jumlah Angsuran</th>
-                    <th scope="col">Tanggal Jatuh Tempo</th>
-                    <th scope="col">Tanggal Bayar</th>
-                    <th scope="col">Metode Pembayaran</th>
-                    <th scope="col">Bukti Pembayaran</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($angsurans as $index => $angsuran)
+        <thead>
+            <tr>
+                <th scope="col">No</th>
+                <th scope="col">Nama</th>
+                <th scope="col">Jumlah Angsuran</th>
+                <th scope="col">Tanggal Jatuh Tempo</th>
+                <th scope="col">Tanggal Bayar</th>
+                <th scope="col">Metode Pembayaran</th>
+                <th scope="col">Bukti Pembayaran</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($angsurans as $index => $angsuran)
                 <tr>
                     <th scope="row">{{ $index + 1 }}</th>
                     <td>{{ $angsuran->nama }}</td>
@@ -65,8 +67,8 @@
                         @endif
                     </td>
                 </tr>
-                @endforeach
-            </tbody>
+            @endforeach
+        </tbody>
     </table>
 </body>
 </html>

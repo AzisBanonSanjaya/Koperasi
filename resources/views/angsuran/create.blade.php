@@ -9,15 +9,15 @@
                 <a href="{{route('angsuran.index')}}" class="btn btn-primary float-end my-2">Kembali</a>
             </div>
         </div>
-        <div class="row  justify-content-center align-items-center">
+        <div class="row justify-content-center align-items-center">
             <div class="col-10 col-md-8 col-lg-6">
-                <h3>Add a Angsuran</h3>
+                <h3>Add Angsuran</h3>
                 <form action="{{ route('angsuran.store') }}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
-                        <label for="nik" class="form-label">Nik</label>
-                        <select class="form-select {{$nik ? 'select-readonly' : ''}} " id="nik" name="nik" required >
-                            <option value="" disabled selected>Select a Nik</option>
+                        <label for="nik" class="form-label">NIK</label>
+                        <select class="form-select {{$nik ? 'select-readonly' : ''}}" id="nik" name="nik" required>
+                            <option value="" disabled selected>Select a NIK</option>
                             @foreach($karyawans as $karyawan)
                                 <option value="{{ $karyawan->nik }}" {{$nik == $karyawan->nik ? 'selected' : ''}} data-name="{{$karyawan->name}}" data-email="{{$karyawan->email}}">
                                     {{ $karyawan->nik }}
@@ -42,25 +42,27 @@
                         <input type="date" class="form-control" id="tanggal_bayar" name="tanggal_bayar" required>
                     </div>
                     <div class="form-group">
-                    <label for="metode_pembayaran">Metode Pembayaran</label>
-                    <select class="form-select" id="metode_pembayaran" name="metode_pembayaran" required>
-                        <option value="" disabled selected>Select Metode Pembayaran</option>
-                        <option value="cash">Cash</option>
-                        <option value="transfer">Transfer</option>
-                    </select>
+                        <label for="metode_pembayaran">Metode Pembayaran</label>
+                        <select class="form-select" id="metode_pembayaran" name="metode_pembayaran" required>
+                            <option value="" disabled selected>Select Metode Pembayaran</option>
+                            <option value="cash">Cash</option>
+                            <option value="transfer">Transfer</option>
+                        </select>
                     </div>
-                    <div class="form-group hidden my-2"id="buktiWrapper">
-                        <label for="bukti_pembayaran">Bukti Pembayaran </label>
+                    <div class="form-group hidden my-2" id="buktiWrapper">
+                        <label for="bukti_pembayaran">Bukti Pembayaran</label>
                         <input type="file" class="form-control" id="bukti_pembayaran" name="bukti_pembayaran" required>
                     </div>
                     <br>
-                    <button type="submit" class="btn btn-primary">Create Pinjaman</button>
+                    <button type="submit" class="btn btn-primary">Create Angsuran</button>
                 </form>
             </div>
         </div>
     </div>
 @endsection
+
 @push('scripts')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function () {
             $("#nik").on("change", function() {
@@ -71,13 +73,12 @@
             $("#nik").trigger('change');
             $("#metode_pembayaran").on("change", function(){
                 let metode_pembayaran =  $(this).find(':selected').text();
-                if(metode_pembayaran == 'Transfer'){
+                if(metode_pembayaran === 'Transfer'){
                     $("#buktiWrapper").removeClass('hidden');
-                }else{
+                } else {
                     $("#buktiWrapper").addClass('hidden');
                 }
             });
-
         });
     </script>
 @endpush
