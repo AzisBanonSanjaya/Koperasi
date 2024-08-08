@@ -30,11 +30,11 @@ Route::group(['middleware' ], function () {
     // Karyawan Routes
     Route::resource('karyawan', KaryawanController::class);
     Route::get('export-pdf-karyawan', [KaryawanController::class,'exportPDF'])->name('export.pdf.karyawan');
-
+   
     // Pinjaman Routes
     Route::resource('pinjaman', PinjamanController::class);
     Route::get('export-pdf-pinjaman', [PinjamanController::class,'exportPDF'])->name('export.pdf.pinjaman');
-
+   
     // Simpanan Routes
     Route::resource('simpanan', SimpananController::class);
      Route::get('export-pdf-simpanan', [SimpananController::class,'exportPDF'])->name('export.pdf.simpanan');

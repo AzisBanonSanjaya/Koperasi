@@ -13,15 +13,21 @@ class TabunganController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $filterNik = $request->filter_user;
         $nik = Auth::user()->role == 'user' ? Auth::user()->nik : '';
-        if(Auth::user()->role != 'user'){
-            $tabungans = Tabungan::all();
+        if(empty($filterNik)){
+            if(Auth::user()->role != 'user'){
+                $tabungans = Tabungan::all();
+            }else{
+                $tabungans = Tabungan::where('nik',  $nik)->get();
+            }
         }else{
-            $tabungans = Tabungan::where('nik',  $nik)->get();
+            $tabungans = Tabungan::where('nik',  $filterNik)->get();
         }
-        return view('tabungan.index', compact('tabungans'));
+        $karyawans = Karyawan::all();
+        return view('tabungan.index', compact('tabungans','karyawans','filterNik'));
     }
 
     /**
@@ -94,8 +100,9 @@ class TabunganController extends Controller
         return redirect()->route('tabungan.index')->with('success', 'tabungan deleted successfully');
     }
 
-    public function exportPDF()
+    public function exportPDF(Request $request)
     {
+        $filterNik = $request->filter_user;
         $nik = Auth::user()->role == 'user' ? Auth::user()->nik : '';
         if(Auth::user()->role != 'user'){
             $tabungans = Tabungan::all();

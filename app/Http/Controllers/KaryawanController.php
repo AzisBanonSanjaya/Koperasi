@@ -137,6 +137,15 @@ public function exportPDF(){
     return $pdf->download('karyawan.pdf');
 }
 
+public function cetak_pdf(Request $request)
+    {
+        $tanggal = $request->get('tanggal');
+        $karyawan = Karyawan::whereDate('tanggal_bergabung', $tanggal)->get();
+
+        $cetak_pdf = Pdf::loadView('karyawan.cetak_pdf', compact('karyawan', 'tanggal'));
+
+        return $cetak_pdf->download('daftar_karyawan_' . $tanggal . '.pdf');
+    }
 
 }
 

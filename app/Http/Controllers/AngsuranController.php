@@ -14,15 +14,21 @@ class AngsuranController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $filterNik = $request->filter_user;
         $nik = Auth::user()->role == 'user' ? Auth::user()->nik : '';
-        if(Auth::user()->role != 'user'){
-            $angsurans = Angsuran::all();
+        if(empty($filterNik)){
+            if(Auth::user()->role != 'user'){
+                $angsurans = Angsuran::all();
+            }else{
+                $angsurans = Angsuran::where('nik',  $nik)->get();
+            }
         }else{
-            $angsurans = Angsuran::where('nik',  $nik)->get();
+            $angsurans = Angsuran::where('nik',  $filterNik)->get();
         }
-        return view('angsuran.index', compact('angsurans'));
+        $karyawans = Karyawan::all();
+        return view('angsuran.index', compact('angsurans','karyawans','filterNik'));
     }
 
     /**
@@ -136,8 +142,9 @@ class AngsuranController extends Controller
         return redirect()->route('angsuran.index')->with('success', 'Angsuran dihapus dengan sukses.');
     }
 
-    public function exportPDF()
+    public function exportPDF(Request $request)
     {
+        $filterNik = $request->filter_user;
         $nik = Auth::user()->role == 'user' ? Auth::user()->nik : '';
         if(Auth::user()->role != 'user'){
             $angsurans = Angsuran::all();

@@ -11,16 +11,21 @@ use App\Models\Karyawan;
 class PinjamanController extends Controller
 {
     // Menampilkan daftar pinjaman
-    public function index()
+    public function index(Request $request)
     {
+        $filterNik = $request->filter_user;
         $nik = Auth::user()->role == 'user' ? Auth::user()->nik : '';
-        if(Auth::user()->role != 'user'){
-            $pinjamans = Pinjaman::all();
+        if(empty($filterNik)){
+            if(Auth::user()->role != 'user'){
+                $pinjamans = Pinjaman::all();
+            }else{
+                $pinjamans = Pinjaman::where('nik',  $nik)->get();
+            }
         }else{
-            $pinjamans = Pinjaman::where('nik',  $nik)->get();
+            $pinjamans = Pinjaman::where('nik',  $filterNik)->get();
         }
-        
-        return view('pinjaman.index', compact('pinjamans'));
+        $karyawans = Karyawan::all();
+        return view('pinjaman.index', compact('pinjamans','karyawans','filterNik'));
     }
 
     // Menampilkan form untuk membuat pinjaman baru
@@ -123,13 +128,18 @@ class PinjamanController extends Controller
     }
     
 
-    public function exportPDF()
+    public function exportPDF(Request $request)
     {
+        $filterNik = $request->filter_user;
         $nik = Auth::user()->role == 'user' ? Auth::user()->nik : '';
-        if(Auth::user()->role != 'user'){
-            $pinjamans = Pinjaman::all();
+        if(empty($filterNik)){
+            if(Auth::user()->role != 'user'){
+                $pinjamans = Pinjaman::all();
+            }else{
+                $pinjamans = Pinjaman::where('nik',  $nik)->get();
+            }
         }else{
-            $pinjamans = Pinjaman::where('nik',  $nik)->get();
+            $pinjamans = Pinjaman::where('nik',  $filterNik)->get();
         }
         
         $data = ['pinjamans' => $pinjamans];

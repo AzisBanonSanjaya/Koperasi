@@ -13,14 +13,21 @@ class SimpananController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        if(Auth::user()->role == 'user'){
-            $simpanans = Simpanan::where('nik', Auth::user()->nik)->get();
+        $filterNik = $request->filter_user;
+        $nik = Auth::user()->role == 'user' ? Auth::user()->nik : '';
+        if(empty($filterNik)){
+            if(Auth::user()->role != 'user'){
+                $simpanans = Simpanan::all();
+            }else{
+                $simpanans = Simpanan::where('nik',  $nik)->get();
+            }
         }else{
-            $simpanans = Simpanan::all();
+            $simpanans = Simpanan::where('nik',  $filterNik)->get();
         }
-        return view('simpanan.index', compact('simpanans'));
+        $karyawans = Karyawan::all();
+        return view('simpanan.index', compact('simpanans','karyawans','filterNik'));
     }
 
     /**
@@ -111,8 +118,9 @@ class SimpananController extends Controller
         return redirect()->route('simpanan.index')->with('success', 'Simpanan deleted successfully');
     }
 
-    public function exportPDF()
+    public function exportPDF(Request $request)
     {
+        $filterNik = $request->filter_user;
         if(Auth::user()->role == 'user'){
             $simpanans = Simpanan::where('nik', Auth::user()->nik)->get();
         }else{
