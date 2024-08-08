@@ -146,13 +146,19 @@ class AngsuranController extends Controller
     {
         $filterNik = $request->filter_user;
         $nik = Auth::user()->role == 'user' ? Auth::user()->nik : '';
-        if(Auth::user()->role != 'user'){
-            $angsurans = Angsuran::all();
+        if(empty($filterNik)){
+            if(Auth::user()->role != 'user'){
+                $angsurans = Angsuran::all();
+            }else{
+                $angsurans = Angsuran::where('nik',  $nik)->get();
+            }
         }else{
-            $angsurans = Angsuran::where('nik',  $nik)->get();
+            $angsurans = Angsuran::where('nik',  $filterNik)->get();
         }
+        
         $data = ['angsurans' => $angsurans];
         $pdf = Pdf::loadView('angsuran.exportPdf', $data);
         return $pdf->download('angsuran.pdf');
     }
+
 }

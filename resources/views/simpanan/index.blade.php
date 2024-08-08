@@ -18,7 +18,7 @@
                                 <select name="filter_user" id="filter_user" class="form-select form-select-sm">
                                     <option value="">Pilih User</option>
                                     @foreach($karyawans as $karyawan)
-                                        <option value="{{ $karyawan->nik }}" {{ @$filterNik == $karyawan->nik ? 'selected' : '' }}>
+                                        <option value="{{ $karyawan->nik }}" {{ request('filter_user') == $karyawan->nik ? 'selected' : '' }}>
                                             {{ $karyawan->nik . ' - ' . $karyawan->name }}
                                         </option>
                                     @endforeach
@@ -38,7 +38,7 @@
     <div class="row mb-3 mt-3">
         <div class="col-lg-12 d-flex justify-content-end">
             <a href="{{ route('simpanan.create') }}" class="btn btn-primary btn-sm mx-2">Tambah Simpanan</a>
-            <a href="{{ route('export.pdf.simpanan') }}" class="btn btn-info btn-sm mx-2">Export PDF Simpanan</a>
+            <a href="{{ route('export.pdf.simpanan', ['filter_user' => request('filter_user')]) }}" class="btn btn-info btn-sm mx-2">Export PDF Simpanan</a>
         </div>
     </div>
 
@@ -67,7 +67,7 @@
                         <td>
                             <div class="btn-group" role="group" aria-label="Actions">
                                 <a href="{{ route('simpanan.edit', $simpanan->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                <form action="{{ route('simpanan.destroy', $simpanan->id) }}" method="POST" class="d-inline">
+                                <form action="{{ route('simpanan.destroy', $simpanan->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>

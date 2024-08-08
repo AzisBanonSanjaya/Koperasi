@@ -34,13 +34,11 @@
             @endif
         </div>
     </div>
-</div>
 
-<div class="container mt-5">
-    <div class="row mb-3">
+    <div class="row mb-3 mt-3">
         <div class="col-lg-12 d-flex justify-content-end">
             <a href="{{ route('tabungan.create') }}" class="btn btn-primary btn-sm mx-2">Tambah Tabungan</a>
-            <a href="{{ route('export.pdf.tabungan') }}" class="btn btn-info btn-sm mx-2">Export PDF Tabungan</a>
+            <a href="{{ route('export.pdf.tabungan', ['filter_user' => @$filterNik]) }}" class="btn btn-info btn-sm mx-2">Export PDF Tabungan</a>
         </div>
     </div>
 
@@ -71,7 +69,7 @@
                         <td>
                             <div class="btn-group" role="group" aria-label="Actions">
                                 <a href="{{ route('tabungan.edit', $tabungan->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                <form action="{{ route('tabungan.destroy', $tabungan->id) }}" method="POST" class="d-inline">
+                                <form action="{{ route('tabungan.destroy', $tabungan->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>
@@ -85,4 +83,3 @@
     </div>
 </div>
 @endsection
-

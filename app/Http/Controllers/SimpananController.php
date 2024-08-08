@@ -121,10 +121,15 @@ class SimpananController extends Controller
     public function exportPDF(Request $request)
     {
         $filterNik = $request->filter_user;
-        if(Auth::user()->role == 'user'){
-            $simpanans = Simpanan::where('nik', Auth::user()->nik)->get();
+        $nik = Auth::user()->role == 'user' ? Auth::user()->nik : '';
+        if(empty($filterNik)){
+            if(Auth::user()->role != 'user'){
+                $simpanans = Simpanan::all();
+            }else{
+                $simpanans = Simpanan::where('nik',  $nik)->get();
+            }
         }else{
-            $simpanans = Simpanan::all();
+            $simpanans = Simpanan::where('nik',  $filterNik)->get();
         }
         $data = ['simpanans' => $simpanans];
         $pdf = Pdf::loadView('simpanan.exportPdf', $data);

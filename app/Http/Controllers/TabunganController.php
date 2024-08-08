@@ -104,11 +104,16 @@ class TabunganController extends Controller
     {
         $filterNik = $request->filter_user;
         $nik = Auth::user()->role == 'user' ? Auth::user()->nik : '';
-        if(Auth::user()->role != 'user'){
-            $tabungans = Tabungan::all();
+        if(empty($filterNik)){
+            if(Auth::user()->role != 'user'){
+                $tabungans = Tabungan::all();
+            }else{
+                $tabungans = Tabungan::where('nik',  $nik)->get();
+            }
         }else{
-            $tabungans = Tabungan::where('nik',  $nik)->get();
+            $tabungans = Tabungan::where('nik',  $filterNik)->get();
         }
+        
         $data = ['tabungans' => $tabungans];
         $pdf = Pdf::loadView('tabungan.exportPdf', $data);
         return $pdf->download('tabungan.pdf');

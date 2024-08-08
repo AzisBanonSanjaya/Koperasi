@@ -51,7 +51,7 @@
                     </div>
                     <div class="form-group hidden my-2" id="buktiWrapper">
                         <label for="bukti_pembayaran">Bukti Pembayaran</label>
-                        <input type="file" class="form-control" id="bukti_pembayaran" name="bukti_pembayaran" required>
+                        <input type="file" class="form-control" id="bukti_pembayaran" name="bukti_pembayaran">
                     </div>
                     <br>
                     <button type="submit" class="btn btn-primary">Create Angsuran</button>
@@ -71,14 +71,20 @@
                 $("#nama").val(name);
             });
             $("#nik").trigger('change');
+            
             $("#metode_pembayaran").on("change", function(){
-                let metode_pembayaran =  $(this).find(':selected').text();
-                if(metode_pembayaran === 'Transfer'){
+                let metode_pembayaran = $(this).find(':selected').val();
+                if (metode_pembayaran === 'transfer') {
                     $("#buktiWrapper").removeClass('hidden');
+                    $("#bukti_pembayaran").prop('required', true);
                 } else {
                     $("#buktiWrapper").addClass('hidden');
+                    $("#bukti_pembayaran").prop('required', false);
                 }
             });
+            
+            // Trigger change event to set the initial state based on the default selected value
+            $("#metode_pembayaran").trigger('change');
         });
     </script>
 @endpush

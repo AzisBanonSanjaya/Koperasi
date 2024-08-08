@@ -35,7 +35,7 @@
         </div>
     </div>
 
-    <div class="row mb-3 mt-5">
+    <div class="row mb-3 mt-3">
         <div class="col-lg-12 d-flex justify-content-end">
             <a href="{{ route('pinjaman.create') }}" class="btn btn-primary btn-sm mx-2">Tambah Pinjaman</a>
             <a href="{{ route('export.pdf.pinjaman', ['filter_user' => @$filterNik]) }}" class="btn btn-info btn-sm mx-2">Export PDF Pinjaman</a>
@@ -53,7 +53,7 @@
                     <th scope="col">Sisa Angsuran</th>
                     <th scope="col">Tanggal Pinjaman</th>
                     <th scope="col">Jangka Waktu</th>
-                    <th scope="col">Bunga Persen</th>
+                    <th scope="col">Bunga (%)</th>
                     <th scope="col">Total Bunga</th>
                     <th scope="col">Total Angsuran</th>
                     <th scope="col">Actions</th>

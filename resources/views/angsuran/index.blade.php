@@ -38,7 +38,7 @@
     <div class="row mb-3 mt-5">
         <div class="col-lg-12 d-flex justify-content-end">
             <a href="{{ route('angsuran.create') }}" class="btn btn-primary btn-sm mx-2">Tambah Angsuran</a>
-            <a href="{{ route('export.pdf.angsuran') }}" class="btn btn-info btn-sm mx-2">Export PDF Angsuran</a>
+            <a href="{{ route('export.pdf.angsuran', ['filter_user' => @$filterNik]) }}" class="btn btn-info btn-sm mx-2">Export PDF Angsuran</a>
         </div>
     </div>
 
